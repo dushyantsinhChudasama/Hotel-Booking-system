@@ -16,7 +16,7 @@
             <div class="col-lg-10 ms-auto p-4 overflow-hidden">
 
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h3>DASHBOARD</h3>
+                    <h3>DB</h3>
                 </div>
 
                 <div class="row mb-4">
