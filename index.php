@@ -1,89 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Booking system</title>
-    <link rel="stylesheet" href="css/style.css">
-    <?php require('inc/links.php');?>
-    <style>
-    .custome-bg {
-      background-color: #21ceac !important;
-      color: white !important;
-      box-shadow: none !important;
-    }
+<?php
 
-    .custome-bg:hover {
-      background-color: #279e8c !important;
-    }
-  </style>
+  ob_start();
+  $title_page = "DC Hotels - Home"
 
-
-     <!-- Include Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-
-<!-- Include Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-  /* Custom styling for the carousel container */
-  .swiper-container {
-    width: 100%;
-    height: 60vh;
-  }
-
-  .swiper-slide img {
-    width: auto;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .swiper-pagination-bullet {
-    background: #fff;
-  }
-
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: #fff;
-  }
-
-  .custome-bg {
-    background-color: #21ceac;
-    color: white;
-  }
-
-  .custome-bg:hover {
-    background-color: #279e8c;
-  }
-
-  .avalibility-form {
-    margin-top: -50px;
-    z-index: 2;
-    position: relative;
-  }
-
-  /* Profile Image Styling */
-.profile img {
-width: 30px; /* Adjust as needed */
-height: 30px; /* Keep equal for circular image */
-object-fit: cover; /* Ensures the image fills the size properly */
-margin-bottom: 10px; /* Spacing below image */
-display: flex;
-}
-
-.book-btn{
-
-}
-</style>
-
-</head>
-
-
-<body class="bg-light">
-    
-    <!-- including header -->
-
-    <?php require('inc/header.php');?>
+?>
 
       <!-- Carousel Portion starts here -->
     <div class="container-fluid px-lg-4 mt-4">
@@ -385,7 +305,6 @@ display: flex;
         </div>
     </div>
 
-    <?php require('inc/footer.php');?>
 
 
     <!-- following liks also include script for swiper js -->
@@ -441,6 +360,9 @@ display: flex;
     });
   </script>
 
+<?php
 
-</body>
-</html>
+$content = ob_get_clean();
+include_once("layout.php")
+
+?>

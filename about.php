@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About us</title>
-    <?php require('inc/links.php');?>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- Include Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<?php
+ob_start();
+$title_page = "Dc Hotels - About";
 
-</head>
-<body>
-    
-
-    <?php require('inc/header.php')?>
-
+?>
 
     <div class="my-5 px-4">
         <h2 class="fw-bold text-center h-font">ABOUT US</h2>
@@ -80,10 +68,8 @@
 
         </div>
     </div>
+<?php
+$content = ob_get_clean();
+include_once("layout.php");
 
-
-    <?php require('inc/footer.php')?>
-
-    
-</body>
-</html>
+?>

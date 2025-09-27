@@ -1,25 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facilities</title>
-    <link rel="stylesheet" href="css/style.css">
-    <?php require('inc/links.php');?>
-     <!-- Include Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<?php
+ob_start();
+$title_page = "DC Hotels - Facilities";
 
-    <style>
-    .pop:hover{
-      border-top-color: var(--teal) !important;
-      transform: scale(1.03);
-      transition: all 0.3s;
-    }
-  </style>
-</head>
-<body class="bg-light">
-
-    <?php require('inc/header.php')?>
+?>
 
     <div class="my-5 px-4">
         <h2 class="fw-bold h-font text-center">OUR FACILITIES</h2>
@@ -107,9 +90,9 @@
         </div>
     </div>
 
-    <?php require('inc/footer.php')?>
+<?php
 
-    
-    
-</body>
-</html>
+$content = ob_get_clean();
+include_once("layout.php");
+
+?>
