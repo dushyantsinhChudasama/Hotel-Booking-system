@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
-</head>
-<body>
-    
-</body>
-</html>
+<?php
+ob_start();
+$title_page = "Settings";
+
+?>
+
+
+<?php
+$content = ob_get_clean();
+include_once("index.php");
+?>

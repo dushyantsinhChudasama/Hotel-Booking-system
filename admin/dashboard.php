@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-
-<body class="bg-light">
-    <div class="container-fluid">
-        <div class="row">
-            <?php
-            require('header.php');
-            ?>
-            <div class="col-lg-10 ms-auto p-4 overflow-hidden">
+<?php
+ob_start();
+$title_page = "Dashoard";
+?>
+            <!-- <div class="col-lg-10 ms-auto p-4 overflow-hidden"> -->
 
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h3>DASHBOARD</h3>
@@ -124,6 +113,9 @@
             </div>
         </div>
     </div>
-</body>
 
-</html>
+<?php
+$content = ob_get_clean();
+include_once("index.php");
+
+?>
