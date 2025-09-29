@@ -11,12 +11,12 @@
       integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" 
       crossorigin="anonymous">
 
-  <!-- This is header file
+  <!-- This is header file -->
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script src="../js/jquery.validate.js"></script>
     <script src="../js/additional-methods.js"> </script>
-    <script src="../js/validate.js"></script> -->
+    <script src="../js/validate.js"></script>
 
     <style>
         .custome-bg {

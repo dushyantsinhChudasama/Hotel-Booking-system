@@ -123,185 +123,123 @@ $title_page = "Dc Hotels - Rooms"
 
             <!-- Section for rooms -->
             <div class="col-lg-9 col-md-12" id="rooms-data">
-                <div class='card mb-4 border-0 shadow'>
-                    
-                    <div class='row g-0 p-3 align-items-center'>
-                        <div class='col-md-5'>
-                            <img src='Images/rooms/1.jpg' class='img-fluid rounded' />
-                        </div>
-                        <div class='col-md-5 px-ld-3 px-md-3'>
-                            <h5 class='mb-3'>Simple Room</h5>
-                            <div class='features mb-4'>
-                                <h6 class='mb-1'>Features</h6>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Bedroom
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Kitchen
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 1
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 2
-                                </span>
-                            </div>
 
-                            <div class='faciliteis mb-3'>
-                                <h6 class='mb-1'>Facilities</h6>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Bedroom
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Kitchen
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 1
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 2
-                                </span>
-                            </div>
-
-                            <div class='guests'>
-                                <h6 class='mb-1'>Guests</h6>
-                                <span class='badge bg-light text-dark text-wrap'>
-                                    3 Adults
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap'>
-                                    2 Childrens
-                                </span>
-                            </div>
-
-                        </div>
-                        <div class='col-md-2 text-center'>
-                            <h6 class='mb-3' style='margin-bottom: 1rem;'>₹2999 per night</h6>
-                            <button onclick='checkLoginToBook($login, $room_data[id])'
-                                class='btn btn-sm text-white w-100 custome-bg shadow-none mb-2'>Book Now</button>
-                            <a href='room_details.php'
-                                class='btn btn-sm btn-outline-dark w-100 shadow-none'>More details</a>
-                        </div>
-                    </div>
-
-                    <div class='row g-0 p-3 align-items-center'>
-                        <div class='col-md-5'>
-                            <img src='Images/rooms/2.jpg' class='img-fluid rounded' />
-                        </div>
-                        <div class='col-md-5 px-ld-3 px-md-3'>
-                            <h5 class='mb-3'>Simple Room</h5>
-                            <div class='features mb-4'>
-                                <h6 class='mb-1'>Features</h6>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Bedroom
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Kitchen
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 1
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 2
-                                </span>
-                            </div>
-
-                            <div class='faciliteis mb-3'>
-                                <h6 class='mb-1'>Facilities</h6>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Bedroom
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Kitchen
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 1
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 2
-                                </span>
-                            </div>
-
-                            <div class='guests'>
-                                <h6 class='mb-1'>Guests</h6>
-                                <span class='badge bg-light text-dark text-wrap'>
-                                    3 Adults
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap'>
-                                    2 Childrens
-                                </span>
-                            </div>
-
-                        </div>
-                        <div class='col-md-2 text-center'>
-                            <h6 class='mb-3' style='margin-bottom: 1rem;'>₹2999 per night</h6>
-                            <button onclick='checkLoginToBook($login, $room_data[id])'
-                                class='btn btn-sm text-white w-100 custome-bg shadow-none mb-2'>Book Now</button>
-                            <a href='room_details.php'
-                                class='btn btn-sm btn-outline-dark w-100 shadow-none'>More details</a>
-                        </div>
-                    </div>
-
-                    <div class='row g-0 p-3 align-items-center'>
-                        <div class='col-md-5'>
-                            <img src='Images/rooms/IMG_78809.png' class='img-fluid rounded' />
-                        </div>
-                        <div class='col-md-5 px-ld-3 px-md-3'>
-                            <h5 class='mb-3'>Simple Room</h5>
-                            <div class='features mb-4'>
-                                <h6 class='mb-1'>Features</h6>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Bedroom
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Kitchen
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 1
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 2
-                                </span>
-                            </div>
-
-                            <div class='faciliteis mb-3'>
-                                <h6 class='mb-1'>Facilities</h6>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Bedroom
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Kitchen
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 1
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap me-1 mb-1'>
-                                    Feature 2
-                                </span>
-                            </div>
-
-                            <div class='guests'>
-                                <h6 class='mb-1'>Guests</h6>
-                                <span class='badge bg-light text-dark text-wrap'>
-                                    3 Adults
-                                </span>
-                                <span class='badge bg-light text-dark text-wrap'>
-                                    2 Childrens
-                                </span>
-                            </div>
-
-                        </div>
-                        <div class='col-md-2 text-center'>
-                            <h6 class='mb-3' style='margin-bottom: 1rem;'>₹2999 per night</h6>
-                            <button onclick='checkLoginToBook($login, $room_data[id])'
-                                class='btn btn-sm text-white w-100 custome-bg shadow-none mb-2'>Book Now</button>
-                            <a href='room_details.php'
-                                class='btn btn-sm btn-outline-dark w-100 shadow-none'>More details</a>
-                        </div>
-                    </div>
-
-                    
-                </div>
+<!-- Room 1 -->
+<div class="card mb-4 border-0 shadow">
+    <div class="row g-0 p-3 align-items-center">
+        <div class="col-md-5">
+            <img src="Images/rooms/1.jpg" class="img-fluid rounded" />
+        </div>
+        <div class="col-md-5 px-lg-3 px-md-3">
+            <h5 class="mb-3">Simple Room</h5>
+            <div class="features mb-4">
+                <h6 class="mb-1">Features</h6>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Bedroom</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Kitchen</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 1</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 2</span>
             </div>
+            <div class="facilities mb-3">
+                <h6 class="mb-1">Facilities</h6>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Bedroom</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Kitchen</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 1</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 2</span>
+            </div>
+            <div class="guests">
+                <h6 class="mb-1">Guests</h6>
+                <span class="badge bg-light text-dark text-wrap">3 Adults</span>
+                <span class="badge bg-light text-dark text-wrap">2 Children</span>
+            </div>
+        </div>
+        <div class="col-md-2 text-center">
+            <h6 class="mb-3">₹2999 per night</h6>
+            <button onclick="checkLoginToBook($login, $room_data[id])"
+                class="btn btn-sm text-white w-100 custome-bg shadow-none mb-2">Book Now</button>
+            <a href="room_details.php"
+                class="btn btn-sm btn-outline-dark w-100 shadow-none">More details</a>
+        </div>
+    </div>
+</div>
+
+<!-- Room 2 -->
+<div class="card mb-4 border-0 shadow">
+    <div class="row g-0 p-3 align-items-center">
+        <div class="col-md-5">
+            <img src="Images/rooms/2.jpg" class="img-fluid rounded" />
+        </div>
+        <div class="col-md-5 px-lg-3 px-md-3">
+            <h5 class="mb-3">Simple Room</h5>
+            <div class="features mb-4">
+                <h6 class="mb-1">Features</h6>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Bedroom</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Kitchen</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 1</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 2</span>
+            </div>
+            <div class="facilities mb-3">
+                <h6 class="mb-1">Facilities</h6>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Bedroom</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Kitchen</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 1</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 2</span>
+            </div>
+            <div class="guests">
+                <h6 class="mb-1">Guests</h6>
+                <span class="badge bg-light text-dark text-wrap">3 Adults</span>
+                <span class="badge bg-light text-dark text-wrap">2 Children</span>
+            </div>
+        </div>
+        <div class="col-md-2 text-center">
+            <h6 class="mb-3">₹2999 per night</h6>
+            <button onclick="checkLoginToBook($login, $room_data[id])"
+                class="btn btn-sm text-white w-100 custome-bg shadow-none mb-2">Book Now</button>
+            <a href="room_details.php"
+                class="btn btn-sm btn-outline-dark w-100 shadow-none">More details</a>
+        </div>
+    </div>
+</div>
+
+<!-- Room 3 -->
+<div class="card mb-4 border-0 shadow">
+    <div class="row g-0 p-3 align-items-center">
+        <div class="col-md-5">
+            <img src="Images/rooms/IMG_78809.png" class="img-fluid rounded" />
+        </div>
+        <div class="col-md-5 px-lg-3 px-md-3">
+            <h5 class="mb-3">Simple Room</h5>
+            <div class="features mb-4">
+                <h6 class="mb-1">Features</h6>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Bedroom</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Kitchen</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 1</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 2</span>
+            </div>
+            <div class="facilities mb-3">
+                <h6 class="mb-1">Facilities</h6>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Bedroom</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Kitchen</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 1</span>
+                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 2</span>
+            </div>
+            <div class="guests">
+                <h6 class="mb-1">Guests</h6>
+                <span class="badge bg-light text-dark text-wrap">3 Adults</span>
+                <span class="badge bg-light text-dark text-wrap">2 Children</span>
+            </div>
+        </div>
+        <div class="col-md-2 text-center">
+            <h6 class="mb-3">₹2999 per night</h6>
+            <button onclick="checkLoginToBook($login, $room_data[id])"
+                class="btn btn-sm text-white w-100 custome-bg shadow-none mb-2">Book Now</button>
+            <a href="room_details.php"
+                class="btn btn-sm btn-outline-dark w-100 shadow-none">More details</a>
+        </div>
+    </div>
+</div>
+
+</div>
+
 
             
         </div>
