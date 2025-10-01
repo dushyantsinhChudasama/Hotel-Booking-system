@@ -148,8 +148,7 @@
 
     <!-- Showing message for email send on registration page -->
 
-    <br>
-    <br>
+
     <?php
     if (isset($_COOKIE['success'])) {
     ?>
@@ -243,6 +242,58 @@
         setActive()
     </script>
 
+<!-- Function for showing alert -->
+    <script>
+    function showAlert(type, message, duration = 3000) {
+    
+        let bsClass = (type === 'success') ? 'alert-success' : 'alert-danger';
+        let div = document.createElement('div');
+        div.className = `alert ${bsClass} alert-dismissible fade show`;
+        div.role = "alert";
+        div.style.position = 'fixed';   // fixed position so it floats
+        div.style.top = '100px';
+        div.style.left = '85%';
+        div.style.transform = 'translateX(-50%)';
+        div.style.zIndex = '1050';
+        div.style.minWidth = '300px';
+        div.style.maxWidth = '90%';
+        div.style.textAlign = 'center';
+        
+        div.innerHTML = `
+            <strong>${message}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.body.prepend(div);   // prepend to body
+        setTimeout(() => {
+            let bsAlert = bootstrap.Alert.getOrCreateInstance(div);
+            bsAlert.close();
+        }, duration);
+    }
+</script>
+
+
+    </script>
+
+
+<!-- Some extra functions for repetative tasks -->
+
+<?php
+
+//alert funciotn to show alerts
+
+function alert($type, $msg){
+
+    $bs_class = ($type == "success") ? "alert-success" : "alert-danger";
+
+    echo <<<alert
+                <div class="alert $bs_class alert-dismissible fade show custome-alert" role="alert">
+                <strong class="me-3">$msg</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            alert;
+}
+
+?>
 
 </body>
 

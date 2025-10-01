@@ -10,16 +10,7 @@ $title_page = "Users";
 
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
-
-        <div class="text-end">
-            <!-- <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#add-room">
-                                <i class="bi bi-plus-square"></i>
-                                Add
-                            </button> -->
-        </div>
-
-
+        
         <div class="table-responsive-md" style="height: 400px; overflow: scroll;min-width: 1150px;">
             <table class="table table-hover border">
                 <thead>
@@ -28,10 +19,11 @@ $title_page = "Users";
                         <th scope="col" width="10%">Name</th>
                         <th scope="col" width="18%">Email</th>
                         <th scope="col" width="10%">Phone no.</th>
-                        <th scope="col" width="30%">Location</th>
-                        <th scope="col" width="20%">DOB</th>
+                        <th scope="col" width="25%">Location</th>
+                        <th scope="col" width="15%">DOB</th>
                         <th scope="col" >Status</th>
-                        <th scope="col" width="20%">Date</th>
+                        <th scope="col" width="8%">Verified</th>
+                        <th scope="col" width="32%">Date</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -47,6 +39,10 @@ $title_page = "Users";
                         <td>04-05-2005</td>
                         <td><button type="button" onclick="" class="btn btn-dark btn-sm shadow-none">
                                 active
+                            </button>
+                        </td>
+                        <td><button class="btn btn-warning btn-sm shadow-none">
+                                Not Verified
                             </button>
                         </td>
                         <td>
@@ -70,6 +66,10 @@ $title_page = "Users";
                         <td>04-05-2005</td>
                         <td><button type="button" onclick="" class="btn btn-danger btn-sm shadow-none">
                                 inactive
+                            </button>
+                        </td>
+                        <td><button class="btn btn-success btn-sm shadow-none">
+                                Verified
                             </button>
                         </td>
                         <td>

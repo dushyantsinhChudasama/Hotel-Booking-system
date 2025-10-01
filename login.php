@@ -1,6 +1,56 @@
+<!-- Checking for login -->
+
+<?php
+include_once("db_Connect.php");
+
+if(isset($_POST['loginBtn'])){
+
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    //matching email and pass
+    $q_login = "SELECT * FROM user_details WHERE email = '$email' ANd password = '$password'";
+    $res_login = mysqli_query($con,$q_login);
+
+
+    if(mysqli_num_rows($res_login) > 0){
+
+        $row = mysqli_fetch_assoc($res_login);
+        $role = $row['role'];
+
+        if($role == 'user'){
+
+            echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showAlert('success', '$role');
+            });
+            </script>";
+        }
+        if($role == 'admin'){
+
+            echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                showAlert('error', '$role');
+            });
+            </script>";
+
+        }
+
+    } else {
+    
+        echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showAlert('error', 'Email not registered');
+        });
+        </script>";
+    }
+}
+
+?>
+
 <?php
 ob_start();
-$title_page = "DC Hotels - Logni";
+$title_page = "DC Hotels - Login";
 
 ?>
 <div class="container py-5">
@@ -15,7 +65,7 @@ $title_page = "DC Hotels - Logni";
 
                 <!-- Login Form -->
                 <div class="card-body p-4">
-                    <form id="loginForm" method="post" action="check_login.php">
+                    <form id="loginForm" method="post" >
                         <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label fw-semibold">Email</label>
@@ -45,7 +95,7 @@ $title_page = "DC Hotels - Logni";
                         </div>
 
                         <!-- Submit -->
-                        <button type="submit" class="btn w-100 text-white fw-semibold bg-dark">Login</button>
+                        <button type="submit" class="btn w-100 text-white fw-semibold bg-dark" name="loginBtn">Login</button>
                     </form>
 
                     <!-- Divider -->

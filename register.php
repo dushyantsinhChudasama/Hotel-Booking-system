@@ -5,6 +5,18 @@ include_once("mailer.php");
 
 if(isset($_POST['regbtn'])){
 
+    $email = $_POST['email'];
+
+    $q_checkMail = "SELECT * FROM user_details WHERE email = '$email'";
+    $res_cehckMail = mysqli_query($con,$q_checkMail);
+
+
+    if(mysqli_num_rows($res_cehckMail) > 0){
+        setcookie('error','Email already registered!',time() + 5);
+        header("Location: register.php");
+        exit();
+    }
+
     $fullname = $_POST['fullname'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -52,7 +64,7 @@ if(isset($_POST['regbtn'])){
                         <p style="font-size:16px; color:#333; margin-bottom:30px;">
                             Please verify your email address by clicking the button below.
                         </p>
-                        <a href="http://localhost/MCA_Sample-1/verify.php?token=' . $token . '&email=' . $email . '" 
+                        <a href="http://localhost/Hotel_Booking_system/verify.php?token=' . $token . '&email=' . $email . '" 
                             style="display:inline-block; background-color:#212529; color:#ffffff; text-decoration:none; 
                                     font-size:16px; font-weight:bold; padding:14px 30px; border-radius:8px;">
                             Verify Email
@@ -84,6 +96,7 @@ if(isset($_POST['regbtn'])){
         setcookie("error","Registration Failed. Try again",time()+5);
         header("Location: register.php");
     }
+
 }
 
 ?>
@@ -141,7 +154,7 @@ $title_page = "DC Hotels - Register";
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Password</label>
                                     <input type="password" class="form-control border-2 border-teal" name="password"
-                                        placeholder="Enter password" data-validation="required" id="password"
+                                        placeholder="Enter password" data-validation="required strongPassword min max" id="password"
                                         data-min="8" data-max="25">
                                     <span class="error text-danger" id="passwordError"></span>
                                 </div>
