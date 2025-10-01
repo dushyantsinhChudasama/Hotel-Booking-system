@@ -103,6 +103,9 @@
 
 <body class="bg-light">
 
+
+    
+    
     <!-- Navigation bar -->
     <nav id="nav-bar" class="navbar navbar-expand-lg navbar-light bg-white px-lg-3 py-lg-2 shadow-sm sticky-top">
         <div class="container-fluid">
@@ -143,13 +146,37 @@
         </div>
     </nav>
 
-    <?php
-        if(isset($content)){
+    <!-- Showing message for email send on registration page -->
 
-            echo $content;
-          
-        }
+    <br>
+    <br>
+    <?php
+    if (isset($_COOKIE['success'])) {
     ?>
+        <div class="container">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php echo $_COOKIE['success']; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    <?php
+    }
+    if (isset($_COOKIE['error'])) {
+    ?>
+        <div class="container">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $_COOKIE['error']; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    <?php
+    }
+    if (isset($content)) {
+        echo $content;
+    }
+
+    ?>
+    <br>
 
 
     <!-- Footer -->

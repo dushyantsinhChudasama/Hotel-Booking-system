@@ -1,4 +1,98 @@
 <?php
+
+include_once("db_Connect.php");
+include_once("mailer.php");
+
+if(isset($_POST['regbtn'])){
+
+    $fullname = $_POST['fullname'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $pincode = $_POST['pincode'];
+    $mobile = $_POST['mobile'];
+    $address = $_POST['address'];
+    
+    $profile_picture = uniqid() . $_FILES['profile_photo']['name'];
+    $profile_picture_tmp = $_FILES['profile_photo']['tmp_name'];
+
+    $token = bin2hex(random_bytes(50));
+
+    $q_reg = "INSERT INTO user_details (`full_name`,`email`,`mobile`,`pincode`,`password`,`address`,`profile_picture`,`token`) 
+    VALUES ('$fullname', '$email', '$mobile', '$pincode', '$password', '$address', '$profile_picture','$token')";
+
+    if(mysqli_query($con,$q_reg)){
+
+        if(!is_dir("Images/profile_pictures"))
+        {
+            mkdir("Images/profile_pictures");
+        }
+
+        move_uploaded_file($profile_picture_tmp,"Images/profile_pictures/" . $profile_picture);
+
+        $body = '
+            
+            <html>
+            <head>
+            <meta charset="UTF-8">
+            <title>Verify Your Email</title>
+            </head>
+            <body style="margin:0; padding:0; background-color:#fdf6e3; font-family:Arial, sans-serif;">
+
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#fdf6e3; padding:40px 0;">
+                <tr>
+                <td align="center">
+                    <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); overflow:hidden;">
+                    <tr>
+                        <td align="center" style="background-color:#212529; padding:20px;">
+                        <h2 style="color:#ffffff; margin:0;">Verify Your Email</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="padding:40px 20px;">
+                        <p style="font-size:16px; color:#333; margin-bottom:30px;">
+                            Please verify your email address by clicking the button below.
+                        </p>
+                        <a href="http://localhost/MCA_Sample-1/verify.php?token=' . $token . '&email=' . $email . '" 
+                            style="display:inline-block; background-color:#212529; color:#ffffff; text-decoration:none; 
+                                    font-size:16px; font-weight:bold; padding:14px 30px; border-radius:8px;">
+                            Verify Email
+                   
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="background-color:#f9fafb; padding:15px; font-size:12px; color:#666;">
+                        © 2025 DC Hotels. All rights reserved.
+                        </td>
+                    </tr>
+                    </table>
+                </td>
+                </tr>
+            </table>
+
+            </body>
+            </html>
+
+        ';
+
+        if(sendEmail($email,"Email Verification from DC Hotels",$body,"")) {
+            setcookie("success","Email registered and verification link sent to registered email.",time()+5);
+            header("Location: register.php");
+        }
+    }
+    else {
+        setcookie("error","Registration Failed. Try again",time()+5);
+        header("Location: register.php");
+    }
+}
+
+?>
+
+    <!-- <script>
+        window.location.href = "register.php";
+    </script> -->
+
+<?php
 ob_start();
 $title_page = "DC Hotels - Register";
 
@@ -47,7 +141,7 @@ $title_page = "DC Hotels - Register";
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold">Password</label>
                                     <input type="password" class="form-control border-2 border-teal" name="password"
-                                        placeholder="Enter password" data-validation="required strongPassword min max" id="password"
+                                        placeholder="Enter password" data-validation="required" id="password"
                                         data-min="8" data-max="25">
                                     <span class="error text-danger" id="passwordError"></span>
                                 </div>
@@ -69,7 +163,7 @@ $title_page = "DC Hotels - Register";
                                     <label class="form-label fw-semibold">Pincode</label>
                                     <input type="text" class="form-control border-2 border-teal"
                                         name="pincode" placeholder="Pincode"
-                                        data-validation="required">
+                                        data-validation="required numeric min max" data-min="6" data-max="6">
                                     <span class="error text-danger" id="pincodeError"></span>
                                 </div>
 
@@ -84,8 +178,8 @@ $title_page = "DC Hotels - Register";
 
                                 <!-- Profile Photo -->
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold">Date Of birth</label>
-                                    <input type="date" class="form-control border-2 border-teal" name="profile_photo"
+                                    <label class="form-label fw-semibold">Profile Photo</label>
+                                    <input type="file" class="form-control border-2 border-teal" name="profile_photo"
                                         data-validation="required file filesize" data-filesize="200">
                                     <span class="error text-danger" id="profile_photoError"></span>
                                 </div>
