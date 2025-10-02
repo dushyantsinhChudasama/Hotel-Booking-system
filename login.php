@@ -1,6 +1,7 @@
 <!-- Checking for login -->
 
 <?php
+session_start();
 include_once("db_Connect.php");
 
 if(isset($_POST['loginBtn'])){
@@ -9,30 +10,41 @@ if(isset($_POST['loginBtn'])){
     $password = $_POST['password'];
 
     //matching email and pass
-    $q_login = "SELECT * FROM user_details WHERE email = '$email' ANd password = '$password'";
+    $q_login = "SELECT * FROM user_details WHERE email = '$email' AND password = '$password'";
     $res_login = mysqli_query($con,$q_login);
 
 
-    if(mysqli_num_rows($res_login) > 0){
+    if(mysqli_num_rows($res_login) > 0)
+    {
 
         $row = mysqli_fetch_assoc($res_login);
         $role = $row['role'];
-
+        $status = $row['status'];
+        
+        
+        //redirecction based on user role
         if($role == 'user'){
 
-            echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                showAlert('success', '$role');
-            });
-            </script>";
+            if($status == 'active')
+            {
+
+                //creating session
+                $_SESSION['login'] = true;
+                $_SESSION['uid'] = $row['id'];
+                $_SESSION['uname'] = $row['full_name'];
+
+                header('Location: index.php');
+            }
+            
         }
         if($role == 'admin'){
 
-            echo "<script>
-            document.addEventListener('DOMContentLoaded', function() {
-                showAlert('error', '$role');
-            });
-            </script>";
+            //creating admin session
+
+            $_SESSION['loginAdmin'] = true;
+            $_SESSION['adminID'] = $row['id'];
+
+            header('Location: admin/dashboard.php');
 
         }
 
@@ -40,7 +52,7 @@ if(isset($_POST['loginBtn'])){
     
         echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
-            showAlert('error', 'Email not registered');
+            showAlert('error', 'Email not registered or Invalid Password');
         });
         </script>";
     }

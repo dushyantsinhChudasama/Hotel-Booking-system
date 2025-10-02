@@ -242,34 +242,42 @@
         setActive()
     </script>
 
-<!-- Function for showing alert -->
+<!-- Some additional functions -->
+
     <script>
-    function showAlert(type, message, duration = 3000) {
-    
-        let bsClass = (type === 'success') ? 'alert-success' : 'alert-danger';
-        let div = document.createElement('div');
-        div.className = `alert ${bsClass} alert-dismissible fade show`;
-        div.role = "alert";
-        div.style.position = 'fixed';   // fixed position so it floats
-        div.style.top = '100px';
-        div.style.left = '85%';
-        div.style.transform = 'translateX(-50%)';
-        div.style.zIndex = '1050';
-        div.style.minWidth = '300px';
-        div.style.maxWidth = '90%';
-        div.style.textAlign = 'center';
+        // Function for showing alert
+        function showAlert(type, message, duration = 3000) {
         
-        div.innerHTML = `
-            <strong>${message}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-        document.body.prepend(div);   // prepend to body
-        setTimeout(() => {
-            let bsAlert = bootstrap.Alert.getOrCreateInstance(div);
-            bsAlert.close();
-        }, duration);
-    }
-</script>
+            let bsClass = (type === 'success') ? 'alert-success' : 'alert-danger';
+            let div = document.createElement('div');
+            div.className = `alert ${bsClass} alert-dismissible fade show`;
+            div.role = "alert";
+            div.style.position = 'fixed';   // fixed position so it floats
+            div.style.top = '100px';
+            div.style.left = '85%';
+            div.style.transform = 'translateX(-50%)';
+            div.style.zIndex = '1050';
+            div.style.minWidth = '300px';
+            div.style.maxWidth = '90%';
+            div.style.textAlign = 'center';
+            
+            div.innerHTML = `
+                <strong>${message}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            document.body.prepend(div);   // prepend to body
+            setTimeout(() => {
+                let bsAlert = bootstrap.Alert.getOrCreateInstance(div);
+                bsAlert.close();
+            }, duration);
+        }
+
+        //function for redirection
+
+        function redirect(url){
+            window.location.href= url;
+        }
+    </script>
 
 
     </script>
@@ -293,6 +301,11 @@ function alert($type, $msg){
             alert;
 }
 
+// Function for redirecting user
+function redirect($url){
+    header("Location: $url");
+    exit();
+}
 ?>
 
 </body>
