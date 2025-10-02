@@ -30,10 +30,10 @@ function sendEmail($to, $subject, $body, $file)
         $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
         $mail->Host       = 'smtp.gmail.com';      // sets GMAIL as the SMTP server
         $mail->Port       = 465;                   // set the SMTP port for the GMAIL server
-        $mail->Username   = "enter your email here";  // GMAIL username(from)
-        $mail->Password   = "enter your password here";            // GMAIL password(from)
-        $mail->SetFrom('enter your email here', 'Hotel Booking'); //from
-        $mail->AddReplyTo("enter your email here", "Hotel Booking"); //to
+        $mail->Username   = "dushyant9803@gmail.com";  // GMAIL username(from)
+        $mail->Password   = "zuzt jziq hhnm fiss";            // GMAIL password(from)
+        $mail->SetFrom('dushyant9803@gmail.com', 'Hotel Booking'); //from
+        $mail->AddReplyTo("dushyant9803@gmail.com", "Hotel Booking"); //to
         $mail->Subject    = $subject;
         $mail->AltBody    = "To view the message, please use an HTML compatible email viewer!";
         if ($file) {
