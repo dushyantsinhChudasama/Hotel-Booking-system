@@ -1,4 +1,8 @@
-
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -134,14 +138,47 @@
                     </li>
 
                 </ul>
-                <div class="d-flex">
-                    <a href="login.php"><button type="button" class="btn btn-outline-dark shadow-none me-lg-3 me-2">Login</button></a>
-                        
-                    
-                    <a href="register.php"><button type="button" class="btn btn-outline-dark shadow-none">
-                        Register
-                    </button></a>
-                </div>
+
+
+                <!-- Checking if user is already logged in that do not show login or register button -->
+                <?php
+
+                
+                if(isset($_SESSION['login']) && $_SESSION['login'] == true) {
+
+                    echo <<<data
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-dark shadow-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            {$_SESSION['uname']}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                            <li><a class="dropdown-item" href="bookings.php">Bookings</a></li>
+                            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                            </ul>
+                        </div>
+
+                    data;
+
+                }
+                else{
+
+                    echo <<<data
+                        <div class="d-flex">
+                            <a href="login.php"><button type="button" class="btn btn-outline-dark shadow-none me-lg-3 me-2">Login</button></a>
+                                
+                            
+                            <a href="register.php"><button type="button" class="btn btn-outline-dark shadow-none">
+                                Register
+                            </button></a>
+                        </div>
+
+                    data;
+                }
+                
+                ?>
+                
             </div>
         </div>
     </nav>
