@@ -25,16 +25,10 @@ $title_page = "Settings";
                     </button>
                 </div>
                 <h6 class="card-subtitle mb-1 fw-bold">Site Title</h6>
-                <p class="card-text" id="site_title">
-
-                    DC HOTELS
-
-                </p>
+                <p class="card-text" id="site_title"></p>
                 <h6 class="card-subtitle mb-1 fw-bold">About us</h6>
                 <p class="card-text" id="site_about">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi vel numquam aut dolore dolor,
-                    architecto corrupti, ab est enim quae repellat assumenda ipsum unde voluptatum pariatur reiciendis!
-                    Necessitatibus, voluptas? Tempore.
+                   
                 </p>
 
             </div>
@@ -84,7 +78,7 @@ $title_page = "Settings";
                     </h5>
                     <div class="form-check form-switch">
                         <form>
-                            <input class="form-check-input" type="checkbox" id="shutdown-toggle">
+                            <input onchange="upd_shutdown(this.value)" class="form-check-input" type="checkbox" id="shutdown-toggle">
                         </form>
                     </div>
                 </div>
@@ -112,26 +106,26 @@ $title_page = "Settings";
                     <div class="col-lg-6">
                         <div class="mb-4">
                             <h6 class="card-subtitle mb-1 fw-bold">Address</h6>
-                            <p class="card-text" id="address">Rajkot</p>
+                            <p class="card-text" id="address"></p>
                         </div>
                         <div class="mb-4">
                             <h6 class="card-subtitle mb-1 fw-bold">Google Map</h6>
-                            <p class="card-text" id="gmap">https://maps.app.goo.gl/mdLHbAKuQLnLY7cy7</p>
+                            <p class="card-text" id="gmap"></p>
                         </div>
                         <div class="mb-4">
                             <h6 class="card-subtitle mb-1 fw-bold">Phone Numbers</h6>
                             <p class="card-text mb-1">
                                 <i class="bi bi-telephone-fill"></i>
-                                <span id="pn1"></span>1234567890
+                                <span id="pn1"></span>
                             </p>
                             <p class="card-text">
                                 <i class="bi bi-telephone-fill"></i>
-                                <span id="pn2"></span>1234567890
+                                <span id="pn2"></span>
                             </p>
                         </div>
                         <div class="mb-4">
                             <h6 class="card-subtitle mb-1 fw-bold">Email</h6>
-                            <p class="card-text" id="email">teset@email.com</p>
+                            <p class="card-text" id="email"></p>
                         </div>
                     </div>
 
@@ -140,15 +134,15 @@ $title_page = "Settings";
                             <h6 class="card-subtitle mb-1 fw-bold">Social Links</h6>
                             <p class="card-text mb-1">
                                 <i class="bi bi-facebook me-1"></i>
-                                <span id="fb"></span>https://link.socialmedia.com
+                                <span id="fb"></span>
                             </p>
                             <p class="card-text">
                                 <i class="bi bi-instagram me-1"></i>
-                                <span id="insta"></span>https://link.socialmedia.com
+                                <span id="insta"></span>
                             </p>
                             <p class="card-text">
                                 <i class="bi bi-twitter-x me-1"></i>
-                                <span id="tw"></span>https://link.socialmedia.com
+                                <span id="tw"></span>
                             </p>
                         </div>
                         <div class="mb-4">
@@ -256,21 +250,20 @@ $title_page = "Settings";
 </div>
 
 <script>
+
     
-    let general_data, contact_data;
 
-    let contact_s_form = document.getElementById("contact_s_form");
-
-    //for getting general form data
+    let general_data, contacts_data;
+    //for getting title and about details
     function get_general()
     {
-        let site_title = document.getElementById("site_title");
-        let site_about = document.getElementById("site_about");
+        let site_title = document.getElementById('site_title');
+        let site_about = document.getElementById('site_about');
 
-        let site_title_inp = document.getElementById("site_title_inp");
-        let site_about_inp = document.getElementById("site_about_inp");
+        let site_title_inp = document.getElementById('site_title_inp');
+        let site_about_inp = document.getElementById('site_about_inp');
 
-        let shutdown_toggle = document.getElementById("shutdown-toggle");
+        let shutdown_toggle = document.getElementById('shutdown-toggle');
 
         //getting data from ajax file
         let xhr = new XMLHttpRequest();
@@ -281,15 +274,15 @@ $title_page = "Settings";
         {
             general_data = JSON.parse(this.responseText);
 
-            //setting data
+            console.log(general_data);
+            //setting data into feilds
             site_title.innerText = general_data.site_title;
             site_about.innerText = general_data.site_about;
 
-            site_title_inp.value = general_data.site_title_inp;
-            site_about_inp.value = general_data.site_about_inp;
+            site_title_inp.value = general_data.site_title;
+            site_about_inp.value = general_data.site_about;
 
-            //for shutdown data-bs-toggle
-            if(general_data.shutdown_toggle == 0)
+            if(general_data.shutdown == 0)
             {
                 shutdown_toggle.checked = false;
                 shutdown_toggle.value = 0;
@@ -301,10 +294,161 @@ $title_page = "Settings";
             }
         }
 
-        xhr.send('get-general');
+        xhr.send('get_general');
     }
 
+    //getting contact data
+    function get_contacts()
+    {
+        let contact_p_id = ['address','gmap','pn1','pn2','email','fb','insta','tw'];
+        let iframe = document.getElementById('iframe');
+
+        //getting data from ajax file
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST","ajax/settings_crud.php",true);
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+        xhr.onload = function()
+        {
+            contacts_data = JSON.parse(this.responseText);
+            contacts_data = Object.values(contacts_data);
+
+            for(i = 0; i < contact_p_id.length; i++)
+            {
+                document.getElementById(contact_p_id[i]).innerText = contacts_data[i+1];
+            }
+            iframe = contacts_data[9];
+
+            contacts_inp(contacts_data);
+        }
+
+        xhr.send('get_contacts');
+    }
+    //for settings values in contact modal feilds
+    function contacts_inp(data)
+        {
+            let contacts_inp_id = ['address_inp','gmap_inp','pn1_inp','pn2_inp','email_inp','fb_inp','insta_inp','tw_inp', 'iframe_inp'];
+
+            for(i=0; i<contacts_inp_id.length; i++)
+            {
+                document.getElementById(contacts_inp_id[i]).value = data[i+1];
+            }
+        }
+
+
+    //for reseting on cancel button clicked
+    function resetGeneralForm()
+    {
+        document.getElementById('site_title_inp').value = general_data.site_title;
+        document.getElementById('site_about_inp').value = general_data.site_about;
+    }
+
+    //for updating general data
+    function upd_general(site_title_val,site_about_val)
+    {
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST","ajax/settings_crud.php",true);
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+        xhr.onload = function()
+        {
+            var myModal1 = document.getElementById('general-s');
+            var myModal = bootstrap.Modal.getInstance(myModal1);
+            if(myModal)
+            {
+                myModal.hide();
+            }
+
+            if(this.responseText == 1)
+            {
+                showAlert('success','Changes Saved');
+                get_general();
+            }
+            else
+            {
+                showAlert('danger','No chagnes saved');
+            }
+        }
+
+        xhr.send('site_title='+site_title_val+'&site_about='+site_about_val+'&upd_general');
+
+    }
+
+    //for updating contact details
+    function upd_contacts()
+    {
+        let index = ['address','gmap','pn1','pn2','email','fb','insta','tw','iframe'];
+        let contact_p_id = ['address_inp','gmap_inp','pn1_inp','pn2_inp','email_inp','fb_inp','insta_inp','tw_inp','iframe_inp'];
+
+        let data_str = "";
+
+        for(let i = 0; i < index.length; i++)
+        {
+            data_str += index[i] + "=" + encodeURIComponent(document.getElementById(contact_p_id[i]).value) + "&";
+        }
+
+        //adding final name of index
+
+        data_str += 'upd_contacts';
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "ajax/settings_crud.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function()
+        {
+            var myModalE = document.getElementById('contacts-s');
+            var myModal = bootstrap.Modal.getInstance(myModalE);
+
+            if(myModal) {
+                myModal.hide();
+            }
+
+            console.log("Response contacts : " + this.responseText);
+
+            if(this.responseText === "1")
+            {
+                showAlert('success','Changes Saved');
+                get_contacts();
+            }
+            else
+            {
+                showAlert('danger','No changes Saved');
+            }
+        }
+
+        xhr.send(data_str);
+    }
+
+    //for managing shutdown
+    function upd_shutdown(val)
+    {
+        let xhr = new XMLHttpRequest();
+            xhr.open("POST","ajax/settings_crud.php",true);
+            xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+            xhr.onload = function()
+            {
+                if(this.responseText == 1 && general_data.shutdown == 0)
+                {
+                    showAlert('success','Shutdown mode has turned on!');
+                }
+                else
+                {
+                    showAlert('success','Shutdown mode has turned off!');
+                }
+                get_general();
+            }
+
+            xhr.send('upd_shutdown='+val);
+    }
+
+    window.onload = function() {
+        get_general();
+        get_contacts();
+    }
 </script>
+
 
 <?php
 $content = ob_get_clean();

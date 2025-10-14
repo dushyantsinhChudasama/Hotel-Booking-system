@@ -123,6 +123,42 @@ if(!isset($_SESSION['adminID']) || $_SESSION['loginAdmin'] !== true){
       }
     }
   }
+
+  // function alert( $type,$msg)
+  //   {
+  //       $bs_class = ($type == "success") ? "alert-success" : "alert-danger"   ;
+  //       echo <<<alert
+  //               <div class="alert $bs_class alert-dismissible fade show custome-alert" role="alert">
+  //               <strong class="me-3">$msg</strong>
+  //               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  //               </div>
+  //           alert;
+  //   }
+
+    function showAlert(type, msg) {
+    // Create alert div
+    const alertDiv = document.createElement("div");
+
+    // Determine Bootstrap class based on type
+    const bsClass = (type === "success") ? "alert-success" : "alert-danger";
+
+    // Set inner HTML for the alert
+    alertDiv.innerHTML = `
+        <div class="alert ${bsClass} alert-dismissible fade show custome-alert" role="alert">
+            <strong class="me-3">${msg}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+
+    // Append alert to body (or a specific container)
+    document.body.appendChild(alertDiv);
+
+    // Optional: Automatically remove alert after 5 seconds
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 3000);
+}
+
   setActive();
 </script>
 </body>
