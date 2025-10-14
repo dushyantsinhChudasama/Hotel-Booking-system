@@ -131,7 +131,7 @@ $title_page = "Settings";
                         </div>
                         <div class="mb-4">
                             <h6 class="card-subtitle mb-1 fw-bold">Email</h6>
-                            <p class="card-text" id="email"></p>
+                            <p class="card-text" id="email">teset@email.com</p>
                         </div>
                     </div>
 
@@ -255,6 +255,56 @@ $title_page = "Settings";
     </div>
 </div>
 
+<script>
+    
+    let general_data, contact_data;
+
+    let contact_s_form = document.getElementById("contact_s_form");
+
+    //for getting general form data
+    function get_general()
+    {
+        let site_title = document.getElementById("site_title");
+        let site_about = document.getElementById("site_about");
+
+        let site_title_inp = document.getElementById("site_title_inp");
+        let site_about_inp = document.getElementById("site_about_inp");
+
+        let shutdown_toggle = document.getElementById("shutdown-toggle");
+
+        //getting data from ajax file
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST","ajax/settings_crud.php",true);
+        xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+
+        xhr.onload = function()
+        {
+            general_data = JSON.parse(this.responseText);
+
+            //setting data
+            site_title.innerText = general_data.site_title;
+            site_about.innerText = general_data.site_about;
+
+            site_title_inp.value = general_data.site_title_inp;
+            site_about_inp.value = general_data.site_about_inp;
+
+            //for shutdown data-bs-toggle
+            if(general_data.shutdown_toggle == 0)
+            {
+                shutdown_toggle.checked = false;
+                shutdown_toggle.value = 0;
+            }
+            else
+            {
+                shutdown_toggle.checked = true;
+                shutdown_toggle.value = 1;
+            }
+        }
+
+        xhr.send('get-general');
+    }
+
+</script>
 
 <?php
 $content = ob_get_clean();

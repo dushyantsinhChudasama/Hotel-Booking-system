@@ -61,4 +61,136 @@ try{
 //     }
 // }
 
+
+
+//here are some important functions
+
+    //for filtering data remove spaces, extra unwanted chars etc.
+    function filteration($data)
+    {
+        foreach($data as $key => $value)
+            {
+                $value = trim($value);
+                $value = stripslashes($value);
+                $value = htmlspecialchars($value);
+                $value = strip_tags($value);
+
+                $data[$key] = $value;
+            }
+
+            return $data;
+    }
+
+    //for selecting a perticular data
+    function select($sql, $values, $datatypes)
+    {
+        $con = $GLOBALS['con'];
+
+        if($stmt = mysqli_prepare($con,$sql))
+        {
+            mysqli_stmt_bind_param($stmt,$datatypes,...$values);
+            if(mysqli_stmt_execute($stmt))
+            {
+                $res = mysqli_stmt_get_result($stmt);
+                mysqli_stmt_close($stmt);
+                return $res;
+            }
+            else
+            {
+                mysqli_stmt_close($stmt);
+                die("Query cannot executed - Select");
+            }
+        }
+        else
+        {
+            die("Query cannot prepared - Select");
+        }
+    }
+
+    //for selecting whole table data
+    function selectAll($table)
+    {
+        $con = $GLOBALS['con'];
+        $res = mysqli_query($con,"SELECT * FROM $table");
+        return $res;
+    }
+
+
+    //for updating the data
+    function update($sql, $values, $datatypes)
+    {
+        $con = $GLOBALS['con'];
+
+        if($stmt = mysqli_prepare($con,$sql))
+        {
+            mysqli_stmt_bind_param($stmt,$datatypes,...$values);
+            if(mysqli_stmt_execute($stmt))
+            {
+                $res = mysqli_stmt_affected_rows($stmt);
+                mysqli_stmt_close($stmt);
+                return $res;
+            }
+            else
+            {
+                mysqli_stmt_close($stmt);
+                die("Query cannot executed - Update");
+            }
+        }
+        else
+        {
+            die("Query cannot prepared - Update");
+        }
+    }
+
+    //for inserting the data
+    function insert($sql, $values, $datatypes)
+    {
+        $con = $GLOBALS['con'];
+
+        if($stmt = mysqli_prepare($con,$sql))
+        {
+            mysqli_stmt_bind_param($stmt,$datatypes,...$values);
+            if(mysqli_stmt_execute($stmt))
+            {
+                $res = mysqli_stmt_affected_rows($stmt);
+                mysqli_stmt_close($stmt);
+                return $res;
+            }
+            else
+            {
+                mysqli_stmt_close($stmt);
+                die("Query cannot executed - Insert");
+            }
+        }
+        else
+        {
+            die("Query cannot prepared - Insert");
+        }
+    }
+
+    //for deleting data
+    function delet($sql, $values, $datatypes)
+    {
+        $con = $GLOBALS['con'];
+
+        if($stmt = mysqli_prepare($con,$sql))
+        {
+            mysqli_stmt_bind_param($stmt,$datatypes,...$values);
+            if(mysqli_stmt_execute($stmt))
+            {
+                $res = mysqli_stmt_affected_rows($stmt);
+                mysqli_stmt_close($stmt);
+                return $res;
+            }
+            else
+            {
+                mysqli_stmt_close($stmt);
+                die("Query cannot executed - Delete");
+            }
+        }
+        else
+        {
+            die("Query cannot prepared - Delete");
+        }
+    }
 ?>
