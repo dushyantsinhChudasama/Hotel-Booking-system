@@ -1,7 +1,7 @@
 <?php
 ob_start();
 $title_page = "DC Hotels - Contact";
-
+require('db_Connect.php');
 ?>
     <div class="my-5 px-4">
     <h2 class="fw-bold h-font text-center">CONTACT US</h2>
@@ -92,6 +92,34 @@ $title_page = "DC Hotels - Contact";
     </div>
   </div>
 
+  <?php
+  if(isset($_POST['send']))
+  {
+    $frm_data = filteration($_POST);
+
+    $q = "INSERT INTO `user_queries`(`name`, `email`, `subject`, `message`) VALUES (?,?,?,?)";
+    $values = [$frm_data['name'],$frm_data['email'],$frm_data['subject'],$frm_data['message']];
+
+    $res = insert($q,$values,'ssss');
+
+    if($res == 1)
+    {
+      echo "<script>
+      document.addEventListener('DOMContentLoaded', function() {
+          showAlert('success', 'Message sent');
+      });
+      </script>";
+    }
+    else
+    {
+      echo "<script>
+      document.addEventListener('DOMContentLoaded', function() {
+          showAlert('error', 'Can not sent message');
+      });
+      </script>";
+    }
+  }
+  ?>
 
 <?php 
 $content = ob_get_clean();

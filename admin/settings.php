@@ -432,7 +432,7 @@ $title_page = "Settings";
                 if(this.responseText == 1 && general_data.shutdown == 0)
                 {
                     showAlert('success','Shutdown mode has turned on!');
-                }
+                }   
                 else
                 {
                     showAlert('success','Shutdown mode has turned off!');
