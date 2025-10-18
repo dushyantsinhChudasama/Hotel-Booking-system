@@ -48,19 +48,19 @@ $title_page = "Settings";
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Site Title</label>
                                 <input type="text" name="site_title" id="site_title_inp"
-                                    class="form-control shadow-none">
+                                    class="form-control shadow-none" data-validation="required">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">About us</label>
                                 <textarea class="form-control shadow-none" name="site_about" id="site_about_inp"
-                                    rows="6"></textarea>
+                                    rows="6" data-validation="required"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" onclick="resetGeneralForm()" class="btn text-secondary shadow-none"
                                 data-bs-dismiss="modal">CANCEL</button>
                             <button type="button" onclick="upd_general(site_title.value,site_about.value)"
-                                class="btn custome-bg text-white shadow-none" data-bs-dismiss="modal">SAVE</button>
+                                class="btn custome-bg text-white shadow-none" id="saveGeneralBtn">SAVE</button>
                         </div>
                     </div>
                 </form>

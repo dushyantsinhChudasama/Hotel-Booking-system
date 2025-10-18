@@ -120,6 +120,24 @@ $(document).ready(function () {
     }
   }
 
+  //for modals
+  $("#saveGeneralBtn").on("click", function (e) {
+    e.preventDefault(); // stop modal auto close or form submission
+
+    let siteTitle = $("#site_title_inp").val().trim();
+    let siteAbout = $("#site_about_inp").val().trim();
+
+    // simple required validation
+    if (siteTitle === "" || siteAbout === "") {
+        alert("Please fill all required fields.");
+        return; // don't close the modal
+    }
+
+    // if everything is valid
+    upd_general(siteTitle, siteAbout); // your update function
+    $("#general-s").modal("hide"); // manually close modal
+});
+
   $("input, textarea, select").on("input change", function () {
     validateField(this);
   });

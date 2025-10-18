@@ -67,22 +67,22 @@ require('admin/functions.php');
             <div class="mt-3">
               <label class="form-label" style="font-weight: 500;">Name</label>
               <input type="text" name="name" class="form-control shadow-none" data-validation="required">
-              <div class="error" id="nameError"></div>
+              <div class="error text-danger" id="nameError"></div>
             </div>
             <div class="mt-3">
               <label class="form-label" style="font-weight: 500;">Email</label>
               <input type="text" name="email" class="form-control shadow-none" data-validation="required email">
-              <div class="error" id="emailError"></div>
+              <div class="error text-danger" id="emailError"></div>
             </div>
             <div class="mt-3">
               <label class="form-label" style="font-weight: 500;">Subject</label>
               <input type="text" name="subject" class="form-control shadow-none" data-validation="required">
-              <div class="error" id="subjectError"></div>
+              <div class="error text-danger" id="subjectError"></div>
             </div>
             <div class="mt-3">
               <label class="form-label" style="font-weight: 500;">Message</label>
               <textarea class="form-control shadow-none" name="message" data-validation="required" rows="5" style="resize: none;"></textarea>
-              <div class="error" id="messageError"></div>
+              <div class="error" text-danger id="messageError"></div>
             </div>
             <button type="submit" name="send" class="btn btn-sm text-white mt-4 text-center" style="background-color: var(--teal); font-size: 20px;">SEND</button>
 
