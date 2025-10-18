@@ -212,7 +212,7 @@ $title_page = "DC Hotels - Register";
                                     <button type="submit" class="btn text-white fw-semibold bg-dark" name="regbtn">
                                         Register
                                     </button>
-                                </div>
+                                </div>  
 
                                 <div class="text-center mt-3">
                                     <p class="mb-0">Already have an account?

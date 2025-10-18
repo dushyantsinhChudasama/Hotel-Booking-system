@@ -2,6 +2,7 @@
 ob_start();
 $title_page = "DC Hotels - Contact";
 require('db_Connect.php');
+require('admin/functions.php');
 ?>
     <div class="my-5 px-4">
     <h2 class="fw-bold h-font text-center">CONTACT US</h2>
@@ -104,19 +105,11 @@ require('db_Connect.php');
 
     if($res == 1)
     {
-      echo "<script>
-      document.addEventListener('DOMContentLoaded', function() {
-          showAlert('success', 'Message sent');
-      });
-      </script>";
+      alertShow('success','message sent');
     }
     else
     {
-      echo "<script>
-      document.addEventListener('DOMContentLoaded', function() {
-          showAlert('error', 'Can not sent message');
-      });
-      </script>";
+      alertShow('danger','can not sent message');
     }
   }
   ?>

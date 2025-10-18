@@ -169,7 +169,7 @@ try{
     }
 
     //for deleting data
-    function delet($sql, $values, $datatypes)
+    function deletQ($sql, $values, $datatypes)
     {
         $con = $GLOBALS['con'];
 
@@ -193,4 +193,6 @@ try{
             die("Query cannot prepared - Delete");
         }
     }
+
+    
 ?>
