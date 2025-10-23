@@ -1,7 +1,13 @@
 <?php
 ob_start();
 $title_page = "Users";
+require('../db_Connect.php');
 
+//getting user details
+$q_user = "SELECT * FROM `user_details`";
+$res = mysqli_query($con,$q_user);
+$i = 1;
+$show = "";
 ?>
 
 <div class="d-flex align-items-center justify-content-between mb-4">
@@ -16,71 +22,87 @@ $title_page = "Users";
                 <thead>
                     <tr class="bg-dark text-light">
                         <th scope="col">#</th>
-                        <th scope="col" width="10%">Name</th>
+                        <th scope="col" width="15%">Name</th>
                         <th scope="col" width="18%">Email</th>
-                        <th scope="col" width="10%">Phone no.</th>
-                        <th scope="col" width="25%">Location</th>
-                        <th scope="col" width="15%">DOB</th>
+                        <th scope="col" width="10%">Phone no</th>
+                        <th scope="col" width="30%">Location</th>
                         <th scope="col" >Status</th>
-                        <th scope="col" width="8%">Verified</th>
-                        <th scope="col" width="32%">Date</th>
+                        <th scope="col" width="11%">Verification</th>
+                        <th scope="col" width="14%">Date</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody id="tabel-data">
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            Test Name
-                        </td>
-                        <td>test@email.com</td>
-                        <td>1234567890</td>
-                        <td>RKU Rajkot dsf sdf |364004</td>
-                        <td>04-05-2005</td>
-                        <td><button type="button" onclick="" class="btn btn-dark btn-sm shadow-none">
-                                active
-                            </button>
-                        </td>
-                        <td><button class="btn btn-warning btn-sm shadow-none">
-                                Not Verified
-                            </button>
-                        </td>
-                        <td>
-                            28-09-2025
-                        </td>
-                        <td>
-                            <button type='button' onclick='remove_user($row[id])' class='btn btn-danger shadow-none btn-sm'>
-                                <i class='bi bi-trash'></i>
-                            </button>
-                        </td>
-                    </tr>
+                    <?php  
+                    
+                        while($data = mysqli_fetch_assoc($res))
+                        {
+                            //this to ban or unban user
+                            $status = "<button type='submit' name='statusBtn' class='btn btn-sm btn-dark shadow-none'>
+                            active</button>";
 
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            Test Name
-                        </td>
-                        <td>test@email.com</td>
-                        <td>1234567890</td>
-                        <td>RKU Rajkot dsf sdf |364004</td>
-                        <td>04-05-2005</td>
-                        <td><button type="button" onclick="" class="btn btn-danger btn-sm shadow-none">
-                                inactive
-                            </button>
-                        </td>
-                        <td><button class="btn btn-success btn-sm shadow-none">
-                                Verified
-                            </button>
-                        </td>
-                        <td>
-                            28-09-2025
-                        </td>
-                        <td>
-                            <button type='button' class='btn btn-danger shadow-none btn-sm'>
+                            if($data['status'] == "inactive")
+                            {
+                                $status = "<button type='submit' name='statusBtn' class='btn btn-sm btn-danger shadow-none'>inactive</button>";
+                                
+                            }
+                            
+                            $verify = "<button name='verifyBtn' class='btn btn-warning btn-sm shadow-none'>
+                                        Pending
+                                    </button>";
+
+                            if($data['verified'] == 1)
+                            {
+                                $verify = "<button name='verifyBtn' class='btn btn-success btn-sm shadow-none'>
+                                        Done
+                                    </button>";
+                                
+                            }
+
+                             //for date
+
+                            $date = date("d-m-Y",strtotime($data["datentime"]));
+
+                            $del_btn = "<button type='submit' class='btn btn-danger shadow-none btn-sm'>
                                 <i class='bi bi-trash'></i>
-                            </button>
-                        </td>
-                    </tr>
+                            </button>";
+
+                            $show .= "
+                                <tr>
+                                    <td>$i</td>
+                                    <td>$data[full_name]</td>
+                                    <td>$data[email]</td>
+                                    <td>$data[mobile]</td>
+                                    <td>$data[address] | $data[pincode]</td>
+                                    <td><form method='POST' style='display:inline;'>
+                                        <input type='hidden' name='user_id' value='{$data['id']}'>
+                                        <input type='hidden' name='status' value='{$data['status']}'>
+                                        <button type='submit' name='changeStatus' class='btn btn-sm " . 
+                                            ($data['status'] == 'inactive' ? "btn-danger" : "btn-dark") . 
+                                            " shadow-none'>" . 
+                                            ($data['status'] == 'inactive' ? "inactive" : "active") . 
+                                        "</button>
+                                    </form></td>
+                                    <td>$verify</td>
+                                    <td>$date</td>
+                                    <td>  
+                                        <form method='POST' style='display:inline;'>
+                                            <input type='hidden' name='user_id' value='{$data['id']}'>
+                                            <button type='submit' name='deleteuser' class='btn btn-danger shadow-none btn-sm'>
+                                                <i class='bi bi-trash'></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                
+                                    
+                                </tr>
+                                ";
+                            $i++;
+                        }
+
+                        echo $show;
+                    
+                    ?>
 
                 </tbody>
             </table>
@@ -90,6 +112,42 @@ $title_page = "Users";
 
 
 </div>
+
+<?php
+
+if(isset($_POST['changeStatus']))
+{
+    $user_id = $_POST['user_id'];
+    $status = $_POST['status'];
+
+    if($status == "active")
+    {
+        $status = "inactive";
+    }
+    else { $status = "active"; }
+
+    $q = "UPDATE `user_details` SET `status` = '$status' WHERE `id` = $user_id";
+
+    if(mysqli_query($con,$q))
+    {
+        header('Location: users.php');
+    }
+    
+}
+
+if(isset($_POST['deleteuser']))
+{
+    $user_id = $_POST['user_id'];
+    
+    $q = "DELETE FROM `user_details` WHERE `id`=$user_id";
+    
+    if(mysqli_query($con,$q))
+    {
+        header('Location: users.php');
+    }
+}
+
+?>
 
 <?php
 $content = ob_get_clean();
