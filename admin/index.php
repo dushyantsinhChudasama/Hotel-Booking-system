@@ -19,10 +19,12 @@ if(!isset($_SESSION['adminID']) || $_SESSION['loginAdmin'] !== true){
     <title><?php echo $title_page?></title>
     <?php include('../inc/links.php');?>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
       rel="stylesheet" 
       integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" 
-      crossorigin="anonymous">
+      crossorigin="anonymous"> -->
+
+    <link rel="stylesheet" href="../css/bootstrap.css">
 
   <!-- This is header file -->
     <script src="../js/bootstrap.bundle.min.js"></script>
@@ -107,10 +109,10 @@ if(!isset($_SESSION['adminID']) || $_SESSION['loginAdmin'] !== true){
 
     </div>
   </div>
-
+<!-- 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-q2nyWg8t+58Nw2K+fHsP1iUzVotmLx5qVtkn9aZJ6Uy9O2HL3mE6kP0rtITr5U3p" 
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> -->
 
 <script>
   function setActive() {
@@ -135,29 +137,33 @@ if(!isset($_SESSION['adminID']) || $_SESSION['loginAdmin'] !== true){
   //           alert;
   //   }
 
-    function showAlert(type, msg) {
-    // Create alert div
-    const alertDiv = document.createElement("div");
-
-    // Determine Bootstrap class based on type
-    const bsClass = (type === "success") ? "alert-success" : "alert-danger";
-
-    // Set inner HTML for the alert
-    alertDiv.innerHTML = `
-        <div class="alert ${bsClass} alert-dismissible fade show custome-alert" role="alert">
-            <strong class="me-3">${msg}</strong>
+        // Function for showing alert
+        function showAlert(type, message, duration = 3000) {
+        
+        let bsClass = (type === 'success') ? 'alert-success' : 'alert-danger';
+        let div = document.createElement('div');
+        div.className = `alert ${bsClass} alert-dismissible fade show`;
+        div.role = "alert";
+        div.style.position = 'fixed';   // fixed position so it floats
+        div.style.top = '100px';
+        div.style.left = '85%';
+        div.style.transform = 'translateX(-50%)';
+        div.style.zIndex = '1050';
+        div.style.minWidth = '300px';
+        div.style.maxWidth = '90%';
+        div.style.textAlign = 'center';
+        
+        div.innerHTML = `
+            <strong>${message}</strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    `;
+        `;
+        document.body.prepend(div);   // prepend to body
+        setTimeout(() => {
+            let bsAlert = bootstrap.Alert.getOrCreateInstance(div);
+            bsAlert.close();
+        }, duration);
+    }
 
-    // Append alert to body (or a specific container)
-    document.body.appendChild(alertDiv);
-
-    // Optional: Automatically remove alert after 5 seconds
-    setTimeout(() => {
-        alertDiv.remove();
-    }, 3000);
-}
 
   setActive();
 </script>

@@ -105,11 +105,19 @@ require('admin/functions.php');
 
     if($res == 1)
     {
-      alertShow('success','message sent');
+      echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showAlert('success', 'Message sent!');
+        });
+        </script>";
     }
     else
     {
-      alertShow('danger','can not sent message');
+      echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showAlert('error', 'Can not send message');
+        });
+        </script>";
     }
   }
   ?>

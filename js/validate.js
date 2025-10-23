@@ -134,7 +134,7 @@ $(document).ready(function () {
     }
 
     // if everything is valid
-    upd_general(siteTitle, siteAbout); // your update function
+    //upd_general(siteTitle, siteAbout); // your update function
     $("#general-s").modal("hide"); // manually close modal
 });
 
@@ -158,4 +158,53 @@ $(document).ready(function () {
       e.preventDefault();
     }
   });
+
+
+  //for contact section
+
+  $("#saveContacts").on("click", function (e) {
+    e.preventDefault(); // stop modal auto close or form submission
+
+    let address = $("#address_inp").val().trim();
+    let gmap = $("#gmap_inp").val().trim();
+    let pn1 = $("#pn1_inp").val().trim();
+    let pn2 = $("#pn2_inp").val().trim();
+    let email = $("#email_inp").val().trim();
+    let fb = $("#fb_inp").val().trim();
+    let insta = $("#insta_inp").val().trim();
+    let tw = $("#tw_inp").val().trim();
+    let iframe = $("#iframe_inp").val().trim();
+
+    // simple required validation
+    if (address === "" || gmap === ""  || pn1 === ""  || pn2 === ""  || email === ""  || fb === ""  || insta === ""  || tw === ""  || iframe === "" ) {
+        alert("Please fill all required fields.");
+        return; // don't close the modal
+    }
+
+    // if everything is valid
+    //upd_general(siteTitle, siteAbout); // your update function
+    $("#contacts-s").modal("hide"); // manually close modal
+});
+
+  $("input, textarea, select").on("input change", function () {
+    validateField(this);
+  });
+
+  $("form").on("submit", function (e) {
+    let isValid = true;
+    $(this)
+      .find("input, textarea, select")
+      .each(function () {
+        validateField(this);
+        let errorSpan = $("#" + $(this).attr("name") + "Error");
+        if (errorSpan.text().trim() !== "") {
+          isValid = false;
+        }
+      });
+
+    if (!isValid) {
+      e.preventDefault();
+    }
+  });
+
 });
