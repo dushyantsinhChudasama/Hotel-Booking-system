@@ -2,7 +2,7 @@
 ob_start();
 $title_page = "User Queries";
 require('../db_Connect.php');
-require('functions.php');
+
 ?>
 
 <div class="d-flex align-items-center justify-content-between mb-4">
@@ -90,12 +90,9 @@ if(isset($_GET['seen']))
 
         if(update($updSeenAll,$values,'i'))
         {
-            alertShow('success','Mark all as read!');
+            header('Location: user_queries.php');
         }
-        else
-        {
-            alertShow('danger','can not Mark all as read!');
-        }
+
    }
    else
    {
@@ -104,21 +101,10 @@ if(isset($_GET['seen']))
 
         if(update($updSeen,$values,'ii'))
         {
-            alertShow('success','Mark as read!');
-        }
-        else
-        {
-            alertShow('danger','can not Mark as read!');
-
+            header('Location: user_queries.php');
         }
    }
 
-   
-   echo "<script>
-    setTimeout(() => { 
-        window.location.href = window.location.pathname; 
-    }, 1200); // wait 1.2s to let user see alert
-</script>";
 
 }
 
@@ -137,12 +123,9 @@ if(isset($_GET['del']))
 
             if(mysqli_query($con, $q))
             {
-                alertShow('success','All Data Deleted!');
+                header('Location: user_queries.php');
             }
-            else
-            {
-                alertShow('error','Operation Failed!');
-            }
+            
         }
    }
    else
@@ -152,22 +135,13 @@ if(isset($_GET['del']))
 
         if(deletQ($updSeen,$values,'i'))
         {
-            alertShow('success','Message deleted!');
+            header('Location: user_queries.php');
         }
-        else
-        {
-            alertShow('danger','can not delete the message!');
-
-        }
+         
    }
 
 
-   echo "<script>
-    setTimeout(() => { 
-        window.location.href = window.location.pathname; 
-    }, 1200); 
-</script>";
-
+   
 }
 
 ?>
