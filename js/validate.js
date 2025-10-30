@@ -87,8 +87,8 @@ $(document).ready(function () {
           let fileName = file.name;
           let fileSizeKB = file.size / 1024;
 
-          if (!/\.(jpg|jpeg|png)$/i.test(fileName)) {
-            errorMessage = "Only JPG, JPEG, or PNG files are allowed.";
+          if (!/\.(jpg|jpeg|png|svg)$/i.test(fileName)) {
+            errorMessage = "Only JPG, JPEG, Svg or PNG files are allowed.";
           } else if (
             validationType.includes("filesize") &&
             fileSizeKB > filesize
@@ -138,30 +138,7 @@ $(document).ready(function () {
     $("#general-s").modal("hide"); // manually close modal
 });
 
-  $("input, textarea, select").on("input change", function () {
-    validateField(this);
-  });
-
-  $("form").on("submit", function (e) {
-    let isValid = true;
-    $(this)
-      .find("input, textarea, select")
-      .each(function () {
-        validateField(this);
-        let errorSpan = $("#" + $(this).attr("name") + "Error");
-        if (errorSpan.text().trim() !== "") {
-          isValid = false;
-        }
-      });
-
-    if (!isValid) {
-      e.preventDefault();
-    }
-  });
-
-
   //for contact section
-
   $("#saveContacts").on("click", function (e) {
     e.preventDefault(); // stop modal auto close or form submission
 
@@ -186,6 +163,26 @@ $(document).ready(function () {
     $("#contacts-s").modal("hide"); // manually close modal
 });
 
+   //for feature modals
+  $("#savefeature").on("click", function (e) {
+    e.preventDefault(); // stop modal auto close or form submission
+
+    let feature = $("#feature_name").val().trim();
+
+    // simple required validation
+    if (feature === "") {
+        alert("Please fill all required fields.");
+        return; // don't close the modal
+    }
+
+    $("#features-s").modal("hide"); // manually close modal
+});
+
+
+
+
+
+
   $("input, textarea, select").on("input change", function () {
     validateField(this);
   });
@@ -206,5 +203,6 @@ $(document).ready(function () {
       e.preventDefault();
     }
   });
+
 
 });
