@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Room Details</title>
+ob_start();
+$title_page = "Dc Hotels - Rooms Detail";
 
-  <?php require('inc/links.php') ?>
-
-  <link rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
-
-  <?php require('inc/header.php'); ?>
+?>
 
   <div class="container">
     <div class="row">
@@ -124,8 +114,9 @@
     </div>
   </div>
 
-  <?php require('inc/footer.php'); ?>
+<?php
 
-</body>
+$content = ob_get_clean();
+include_once("layout.php");
 
-</html>
+?>
