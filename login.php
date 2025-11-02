@@ -103,7 +103,7 @@ $title_page = "DC Hotels - Login";
                                     Remember Me
                                 </label>
                             </div>
-                            <a href="forgot_password.php" class="text-decoration-none" style="color:#0d9488;">Forgot Password?</a>
+                            <a href="forgetPassword.php" class="text-decoration-none" style="color:#0d9488;">Forgot Password?</a>
                         </div>
 
                         <!-- Submit -->
