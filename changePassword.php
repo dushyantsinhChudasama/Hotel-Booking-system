@@ -92,13 +92,8 @@ if(isset($_POST['changePassword']))
 
                         <!-- Remember Me + Forgot Password -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="rememberMe">
-                                <label class="form-check-label" for="rememberMe">
-                                    Remember Me
-                                </label>
-                            </div>
-                            <a href="forgetPassword.php" class="text-decoration-none" style="color:#0d9488;">Forgot Password?</a>
+                            
+                            <a href="login.php" class="text-decoration-none" style="color:#0d9488;">Login to your account</a>
                         </div>
 
                         <!-- Submit -->
