@@ -12,10 +12,10 @@ $title_page = "Rooms";
     <div class="card-body">
 
         <div class="text-end mb-4">
-            <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-room">
+            <a class="btn btn-dark btn-sm" style="background-color: #000; border-color: #000;" href="addNewRoom.php">
                 <i class="bi bi-plus-square"></i>
                 Add
-            </button>
+            </a>
         </div>
 
         <div class="table-responsive">
@@ -49,17 +49,17 @@ $title_page = "Rooms";
                         <td>10</td>
                         <td><button class='btn btn-sm btn-dark shadow-none'>active</button></td>
                         <td>
-                            <button type='button' class='btn btn-primary shadow-none btn-sm'>
+                            <a class='btn btn-primary shadow-none btn-sm'>
                                 <i class='bi bi-pencil-square'></i>
-                            </button>
+                            </a>
                          
-                            <button type='button' class='btn btn-info shadow-none btn-sm' data-bs-toggle='modal' data-bs-target='#room-images'>
+                            <a class='btn btn-info shadow-none btn-sm'>
                                 <i class='bi bi-images'></i>
-                            </button>
+                            </a>
                         
-                            <button type='button' class='btn btn-danger shadow-none btn-sm'>
+                            <a class='btn btn-danger shadow-none btn-sm'>
                                 <i class='bi bi-trash'></i>
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
