@@ -1,6 +1,7 @@
 <?php
 ob_start();
 $title_page = "Rooms";
+include('../db_Connect.php');
 
 ?>
 
@@ -34,64 +35,66 @@ $title_page = "Rooms";
                 </thead>
                 <tbody id="tabel-data">
                     <tr class='align-middle'>
-                        <td>1</td>
-                        <td>Simple Room</td>
-                        <td>200 sq.ft.</td>
-                        <td>
-                            <span class='badge rounded-pill bg-light text-dark'>
-                                Adult: 4
-                            </span><br>
-                            <span class='badge rounded-pill bg-light text-dark'>
-                                Children: 2
-                            </span>
-                        </td>
-                        <td>₹2999</td>
-                        <td>10</td>
-                        <td><button class='btn btn-sm btn-dark shadow-none'>active</button></td>
-                        <td>
-                            <a class='btn btn-primary shadow-none btn-sm'>
-                                <i class='bi bi-pencil-square'></i>
-                            </a>
-                         
-                            <a class='btn btn-info shadow-none btn-sm'>
-                                <i class='bi bi-images'></i>
-                            </a>
+                        <?php
+                        $i = 1;
+                        $q_get_rooms = "SELECT * FROM `rooms`";
+                        $res_get_rooms = mysqli_query($con, $q_get_rooms);
+                        $statusButton;
+                        while($row = mysqli_fetch_assoc($res_get_rooms)){
+
+                            if($row['status'] == 1){
+                                $statusButton = "<button name='changeStatus' class='btn btn-sm btn-dark shadow-none'>active</button>";
+                            } else {
+                                $statusButton = "<button name='changeStatus' class='btn btn-sm btn-warning shadow-none'>inactive</button>";
+                            }
+
+                            echo "
+                            <td>$i</td>
+                            <td>$row[name]</td>
+                            <td>$row[area] sq.ft.</td>
+                            <td>
+                                <span class='badge rounded-pill bg-light text-dark'>
+                                    Adult: $row[adult]
+                                </span><br>
+                                <span class='badge rounded-pill bg-light text-dark'>
+                                    Children: $row[children]
+                                </span>
+                            </td>
+                            <td>₹$row[price]</td>
+                            <td>$row[quantity]</td>
+                            <td>
+                                <form method='POST' style='display:inline;'>
+                                    <input type='hidden' name='room_id' value='{$row['id']}'>
+                                        $statusButton
+                                </form>
+                            </td>
+
+                            <td>
+                                <form method='POST' style='display:inline;'>
+                                    <input type='hidden' name='room_id' value='{$row['id']}'>
+                                    <a href='editRoom.php?room_id={$row['id']}' class='btn btn-primary shadow-none btn-sm'>
+                                        <i class='bi bi-pencil-square'></i>
+                                    </a>
+
+                                    <a href='roomImages.php?room_id={$row['id']}' class='btn btn-info shadow-none btn-sm'>
+                                    <i class='bi bi-images'></i>
+                                    </a>
+
+                                    <button type='submit' name='delete_room' class='btn btn-danger shadow-none btn-sm'>
+                                            <i class='bi bi-trash'></i>
+                                        </button>
+
+                                </form>
+                            </td>
+
+                            ";
+                        }
                         
-                            <a class='btn btn-danger shadow-none btn-sm'>
-                                <i class='bi bi-trash'></i>
-                            </a>
-                        </td>
+                        ?>
+                        
+
                     </tr>
 
-                    <tr class='align-middle'>
-                        <td>1</td>
-                        <td>Simple Room</td>
-                        <td>200 sq.ft.</td>
-                        <td>
-                            <span class='badge rounded-pill bg-light text-dark'>
-                                Adult: 4
-                            </span><br>
-                            <span class='badge rounded-pill bg-light text-dark'>
-                                Children: 2
-                            </span>
-                        </td>
-                        <td>₹2999</td>
-                        <td>10</td>
-                        <td><button class='btn btn-sm btn-warning shadow-none'>Inactive</button></td>
-                        <td>
-                            <button type='button' class='btn btn-primary shadow-none btn-sm'>
-                                <i class='bi bi-pencil-square'></i>
-                            </button>
-
-                            <button type='button' class='btn btn-info shadow-none btn-sm' data-bs-toggle='modal' data-bs-target='#room-images'>
-                                <i class='bi bi-images'></i>
-                            </button>
-
-                            <button type='button' class='btn btn-danger shadow-none btn-sm'>
-                                <i class='bi bi-trash'></i>
-                            </button>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
