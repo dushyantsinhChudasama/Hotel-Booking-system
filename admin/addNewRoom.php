@@ -1,10 +1,49 @@
-<?php
+<?php  
+include('../db_Connect.php'); 
+ob_start(); 
+$title_page = "Add New Room";  
 
-include('../db_Connect.php');
-ob_start();
-$title_page = "Add New Room";
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $roomname = $_POST['roomname'];
+    $price = $_POST['price'];
+    $area = $_POST['area'];
+    $quantity = $_POST['quantity'];
+    $adults = $_POST['adults'];
+    $children = $_POST['children'];
+    $description = $_POST['description'];
 
+    // Insert room details
+    $insert_room = "INSERT INTO `rooms`(`name`, `area`, `price`, `quantity`, `adult`, `children`, `description`, `status`, `removed`) 
+                    VALUES ('$roomname','$area','$price','$quantity','$adults','$children','$description',1,0)";
+    
+    if (mysqli_query($con, $insert_room)) {
+        $room_id = mysqli_insert_id($con); // Get new room ID
+
+        // Insert selected features
+        if (!empty($_POST['features'])) {
+            foreach ($_POST['features'] as $feature_id) {
+                $insert_feature = "INSERT INTO `room_features`(`room_id`, `features_id`) 
+                                   VALUES ('$room_id','$feature_id')";
+                mysqli_query($con, $insert_feature);
+            }
+        }
+
+        // Insert selected facilities
+        if (!empty($_POST['facilities'])) {
+            foreach ($_POST['facilities'] as $facility_id) {
+                $insert_facility = "INSERT INTO `room_facilities`(`room_id`, `facilities_id`) 
+                                    VALUES ('$room_id','$facility_id')";
+                mysqli_query($con, $insert_facility);
+            }
+        }
+
+        echo "<script>alert('Room added successfully!'); window.location.href='rooms.php';</script>";
+    } else {
+        echo "<script>alert('Error while adding room.');</script>";
+    }
+}
 ?>
+
 
 
 <div class="d-flex align-items-center mb-4">
@@ -65,6 +104,13 @@ $title_page = "Add New Room";
                         <span class="error text-danger" id="childrenError"></span>
                     </div>
 
+                    <div class="col-md-12 mt-4">
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea class="form-control border-2 border-teal" name="description" rows="2"
+                            placeholder="Enter Room description" data-validation="required"></textarea>
+                        <span class="error text-danger" id="descriptionError"></span>
+                    </div>
+
                 </div>
 
             </div>
@@ -86,7 +132,7 @@ $title_page = "Add New Room";
                         echo "
                                 <div class='col-md-3'>
                                     <label>
-                                        <input type='checkbox' name='features' value='$fac_id'
+                                        <input type='checkbox' name='facilities[]' value='$fac_id'
                                             class='form-check-input shadow-none'>
                                         $fac_name
                                     </label>
@@ -117,7 +163,7 @@ $title_page = "Add New Room";
                         echo "
                                 <div class='col-md-3'>
                                     <label>
-                                        <input type='checkbox' name='features' value='$fea_id'
+                                        <input type='checkbox' name='features[]' value='$fea_id'
                                             class='form-check-input shadow-none'>
                                         $fea_name
                                     </label>
