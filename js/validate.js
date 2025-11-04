@@ -1,6 +1,12 @@
 $(document).ready(function () {
   function validateField(input) {
     let field = $(input);
+
+    // ✅ Skip features[] and facilities[] fields from validation before anything else
+    if (field.attr("name")?.includes("[]")) {
+      return; // skip any array-type field
+    }
+
     let value = field.val().trim();
     let errorSpan = $("#" + field.attr("name") + "Error");
     let validationType = field.data("validation") || "";

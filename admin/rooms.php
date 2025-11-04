@@ -3,6 +3,40 @@ ob_start();
 $title_page = "Rooms";
 include('../db_Connect.php');
 
+//deleting the room
+if(isset($_POST['delete_room']))
+{
+    $id = $_POST['room_id'];
+    $q_delete_room = "UPDATE `rooms` SET `removed` = 1 WHERE `id`='$id'";
+    mysqli_query($con, $q_delete_room);
+    header("Location: rooms.php");
+}
+
+//changing the status of room
+if(isset($_POST['changeStatus']))
+{
+    $id = $_POST['room_id'];
+
+    //get current status
+    $q_get_status = "SELECT `status` FROM `rooms` WHERE `id`='$id'";
+    $res_get_status = mysqli_query($con, $q_get_status);
+    $row = mysqli_fetch_assoc($res_get_status);
+    $current_status = $row['status'];
+
+    //toggle status
+    if($current_status == 1){
+        $new_status = 0;
+    } else {
+        $new_status = 1;
+    }
+
+    //update status in database
+    $q_update_status = "UPDATE `rooms` SET `status`='$new_status' WHERE `id`='$id'";
+    mysqli_query($con, $q_update_status);
+    header("Location: rooms.php");
+}
+
+
 ?>
 
 <div class="d-flex align-items-center justify-content-between mb-4">
@@ -34,12 +68,13 @@ include('../db_Connect.php');
                     </tr>
                 </thead>
                 <tbody id="tabel-data">
-                    <tr class='align-middle'>
+                    
                         <?php
                         $i = 1;
-                        $q_get_rooms = "SELECT * FROM `rooms`";
+                        $q_get_rooms = "SELECT * FROM `rooms` WHERE `removed` = 0";
                         $res_get_rooms = mysqli_query($con, $q_get_rooms);
                         $statusButton;
+                        $opt = "";
                         while($row = mysqli_fetch_assoc($res_get_rooms)){
 
                             if($row['status'] == 1){
@@ -48,52 +83,56 @@ include('../db_Connect.php');
                                 $statusButton = "<button name='changeStatus' class='btn btn-sm btn-warning shadow-none'>inactive</button>";
                             }
 
-                            echo "
-                            <td>$i</td>
-                            <td>$row[name]</td>
-                            <td>$row[area] sq.ft.</td>
-                            <td>
-                                <span class='badge rounded-pill bg-light text-dark'>
-                                    Adult: $row[adult]
-                                </span><br>
-                                <span class='badge rounded-pill bg-light text-dark'>
-                                    Children: $row[children]
-                                </span>
-                            </td>
-                            <td>₹$row[price]</td>
-                            <td>$row[quantity]</td>
-                            <td>
-                                <form method='POST' style='display:inline;'>
-                                    <input type='hidden' name='room_id' value='{$row['id']}'>
-                                        $statusButton
-                                </form>
-                            </td>
+                            $opt .=     "
+                                <tr class='align-middle'>
+                                <td>$i</td>
+                                <td>$row[name]</td>
+                                <td>$row[area] sq.ft.</td>
+                                <td>
+                                    <span class='badge rounded-pill bg-light text-dark'>
+                                        Adult: $row[adult]
+                                    </span><br>
+                                    <span class='badge rounded-pill bg-light text-dark'>
+                                        Children: $row[children]
+                                    </span>
+                                </td>
+                                <td>₹$row[price]</td>
+                                <td>$row[quantity]</td>
+                                <td>
+                                    <form method='POST' style='display:inline;'>
+                                        <input type='hidden' name='room_id' value='{$row['id']}'>
+                                            $statusButton
+                                    </form>
+                                </td>
 
-                            <td>
-                                <form method='POST' style='display:inline;'>
-                                    <input type='hidden' name='room_id' value='{$row['id']}'>
-                                    <a href='editRoom.php?room_id={$row['id']}' class='btn btn-primary shadow-none btn-sm'>
-                                        <i class='bi bi-pencil-square'></i>
-                                    </a>
+                                <td>
+                                    <form method='POST' style='display:inline;'>
+                                        <input type='hidden' name='room_id' value='{$row['id']}'>
+                                        <a href='edit_room.php?room_id={$row['id']}' class='btn btn-primary shadow-none btn-sm'>
+                                            <i class='bi bi-pencil-square'></i>
+                                        </a>
 
-                                    <a href='roomImages.php?room_id={$row['id']}' class='btn btn-info shadow-none btn-sm'>
-                                    <i class='bi bi-images'></i>
-                                    </a>
+                                        <a href='roomImages.php?room_id={$row['id']}' class='btn btn-info shadow-none btn-sm'>
+                                        <i class='bi bi-images'></i>
+                                        </a>
 
-                                    <button type='submit' name='delete_room' class='btn btn-danger shadow-none btn-sm'>
-                                            <i class='bi bi-trash'></i>
-                                        </button>
+                                        <button type='submit' name='delete_room' class='btn btn-danger shadow-none btn-sm'>
+                                                <i class='bi bi-trash'></i>
+                                            </button>
 
-                                </form>
-                            </td>
+                                    </form>
+                                </td>
+                                </tr>
 
-                            ";
+                                ";
+                                $i++;
                         }
+                        echo $opt;
                         
                         ?>
                         
 
-                    </tr>
+
 
                 </tbody>
             </table>
