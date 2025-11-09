@@ -47,6 +47,11 @@ if(isset($_POST['changeStatus']))
     <div class="card-body">
 
         <div class="text-end mb-4">
+            <a class="btn btn-dark btn-sm me-3" style="background-color: #000; border-color: #000;" href="defaultRoomImage.php">
+                <i class="bi bi-card-image me-2"></i>
+                Default room Image
+            </a>
+
             <a class="btn btn-dark btn-sm" style="background-color: #000; border-color: #000;" href="addNewRoom.php">
                 <i class="bi bi-plus-square"></i>
                 Add
