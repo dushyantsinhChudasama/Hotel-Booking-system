@@ -134,13 +134,25 @@ include('db_Connect.php');
                 $rooms = "";
                 while ($room_data = mysqli_fetch_assoc($res_getRooms)) {
 
-                    if(empty($room_data['image'])) {
+                    $room_id = $room_data['id'];
+                    $room_img_qry = "SELECT * FROM `room_image` WHERE `room_id` = '$room_id'";
+                    $res_room_img = mysqli_query($con, $room_img_qry);
+                    $room_Image_res = mysqli_fetch_assoc($res_room_img);
+                    //$room_Image = "../Images/rooms/".$room_Image_res['image'];
+
+                    if(empty($room_Image_res['image'])) {
                         //getting default room image
-                        $default_room_image = "SELECT * FROM `room_default_image` WHERE `room_id` = '{$room_data['id']}'";
+                        $default_room_image = "SELECT * FROM `room_default_image`";
                         $res_default_room_image = mysqli_query($con, $default_room_image);
                         $row_default_room_image = mysqli_fetch_assoc($res_default_room_image);
-               
-                        $room_data['image'] = $row_default_room_image['image'];
+                        print_r($row_default_room_image);
+                        $room_Image = "../Images/room_default_image/".$row_default_room_image['image'];
+                        //print_r($row_default_room_image);
+                        
+                    }
+                    else
+                    {
+                        $room_Image = "../Images/rooms/".$room_Image_res['image'];
                     }
                 
                     $rooms .= "
@@ -148,10 +160,10 @@ include('db_Connect.php');
                     <div class='card mb-4 border-0 shadow'>
                         <div class='row g-0 p-3 align-items-center'>
                             <div class='col-md-5'>
-                                <img src='$room_data[image]' class='img-fluid rounded' />
+                                <img src='{$room_Image}' class='img-fluid rounded' />
                             </div>
                             <div class='col-md-5 px-lg-3 px-md-3'>
-                                <h5 class='mb-3'>Simple Room</h5>
+                                <h5 class='mb-3'>$room_data[name]</h5>
                                 <div class='features mb-4'>
                                     <h6 class='mb-1'>Features</h6>
                                     <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Bedroom</span>
@@ -189,43 +201,7 @@ include('db_Connect.php');
                 echo $rooms;
             
             ?>
-<!-- Room 1 -->
-<div class="card mb-4 border-0 shadow">
-    <div class="row g-0 p-3 align-items-center">
-        <div class="col-md-5">
-            <img src="Images/rooms/1.jpg" class="img-fluid rounded" />
-        </div>
-        <div class="col-md-5 px-lg-3 px-md-3">
-            <h5 class="mb-3">Simple Room</h5>
-            <div class="features mb-4">
-                <h6 class="mb-1">Features</h6>
-                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Bedroom</span>
-                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Kitchen</span>
-                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 1</span>
-                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 2</span>
-            </div>
-            <div class="facilities mb-3">
-                <h6 class="mb-1">Facilities</h6>
-                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Bedroom</span>
-                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Kitchen</span>
-                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 1</span>
-                <span class="badge bg-light text-dark text-wrap me-1 mb-1">Feature 2</span>
-            </div>
-            <div class="guests">
-                <h6 class="mb-1">Guests</h6>
-                <span class="badge bg-light text-dark text-wrap">3 Adults</span>
-                <span class="badge bg-light text-dark text-wrap">2 Children</span>
-            </div>
-        </div>
-        <div class="col-md-2 text-center">
-            <h6 class="mb-3">₹2999 per night</h6>
-            <button onclick="checkLoginToBook($login, $room_data[id])"
-                class="btn btn-sm text-white w-100 custome-bg shadow-none mb-2">Book Now</button>
-            <a href="room_details.php"
-                class="btn btn-sm btn-outline-dark w-100 shadow-none">More details</a>
-        </div>
-    </div>
-</div>
+
 
 
 </div>
