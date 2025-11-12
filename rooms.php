@@ -135,7 +135,7 @@ include('db_Connect.php');
                 while ($room_data = mysqli_fetch_assoc($res_getRooms)) {
 
                     $room_id = $room_data['id'];
-                    $room_img_qry = "SELECT * FROM `room_image` WHERE `room_id` = '$room_id'";
+                    $room_img_qry = "SELECT * FROM `room_image` WHERE `room_id` = '$room_id' and `thumb` = '1'";
                     $res_room_img = mysqli_query($con, $room_img_qry);
                     $room_Image_res = mysqli_fetch_assoc($res_room_img);
                     //$room_Image = "../Images/rooms/".$room_Image_res['image'];
@@ -155,6 +155,23 @@ include('db_Connect.php');
                     {
                         $room_Image = "Images/rooms/".$room_Image_res['image'];
                     }
+
+                    //getting room features and facilites
+                    $q_getFeatures = "SELECT f.name FROM `room_features` rf INNER JOIN `features` f ON rf.features_id = f.id WHERE rf.room_id = $room_data[id]";
+                    $res_getFeatures = mysqli_query($con, $q_getFeatures);
+                    $features = "";
+                    while($feature_row = mysqli_fetch_assoc($res_getFeatures))
+                    {
+                        $features .= "<span class='badge bg-light text-dark text-wrap me-1 mb-1'>$feature_row[name]</span>";
+                    }
+
+                    $q_getFacility = "SELECT f.name FROM `room_facilities` rf INNER JOIN `facilities` f ON rf.facilities_id = f.id WHERE rf.room_id = $room_data[id]";
+                    $res_getFacility = mysqli_query($con, $q_getFacility);
+                    $facility = "";
+                    while($facility_row = mysqli_fetch_assoc($res_getFacility))
+                    {
+                        $facility .= "<span class='badge bg-light text-dark text-wrap me-1 mb-1'>$facility_row[name]</span>";
+                    }
                 
                     $rooms .= "
 
@@ -167,22 +184,20 @@ include('db_Connect.php');
                                 <h5 class='mb-3'>$room_data[name]</h5>
                                 <div class='features mb-4'>
                                     <h6 class='mb-1'>Features</h6>
-                                    <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Bedroom</span>
-                                    <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Kitchen</span>
-                                    <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Feature 1</span>
-                                    <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Feature 2</span>
+                                    
+                                    $features
+
                                 </div>
                                 <div class='facilities mb-3'>
                                     <h6 class='mb-1'>Facilities</h6>
-                                    <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Bedroom</span>
-                                    <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Kitchen</span>
-                                    <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Feature 1</span>
-                                    <span class='badge bg-light text-dark text-wrap me-1 mb-1'>Feature 2</span>
+                                   
+                                     $facility
+
                                 </div>
                                 <div class='guests'>
                                     <h6 class='mb-1'>Guests</h6>
-                                    <span class='badge bg-light text-dark text-wrap'>3 Adults</span>
-                                    <span class='badge bg-light text-dark text-wrap'>2 Children</span>
+                                    <span class='badge bg-light text-dark text-wrap'>$room_data[adult] Adults</span>
+                                    <span class='badge bg-light text-dark text-wrap'>$room_data[children] Children</span>
                                 </div>
                             </div>
                             <div class='col-md-2 text-center'>
