@@ -145,14 +145,15 @@ include('db_Connect.php');
                         $default_room_image = "SELECT * FROM `room_default_image`";
                         $res_default_room_image = mysqli_query($con, $default_room_image);
                         $row_default_room_image = mysqli_fetch_assoc($res_default_room_image);
-                        print_r($row_default_room_image);
-                        $room_Image = "../Images/room_default_image/".$row_default_room_image['image'];
+                        //print_r($row_default_room_image);
+                        $room_Image = "Images/room_default_image/".$row_default_room_image['image'];
+                        //echo $room_Image;
                         //print_r($row_default_room_image);
                         
                     }
                     else
                     {
-                        $room_Image = "../Images/rooms/".$room_Image_res['image'];
+                        $room_Image = "Images/rooms/".$room_Image_res['image'];
                     }
                 
                     $rooms .= "
@@ -160,7 +161,7 @@ include('db_Connect.php');
                     <div class='card mb-4 border-0 shadow'>
                         <div class='row g-0 p-3 align-items-center'>
                             <div class='col-md-5'>
-                                <img src='{$room_Image}' class='img-fluid rounded' />
+                                <img src='$room_Image' class='img-fluid rounded' />
                             </div>
                             <div class='col-md-5 px-lg-3 px-md-3'>
                                 <h5 class='mb-3'>$room_data[name]</h5>

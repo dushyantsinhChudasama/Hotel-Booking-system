@@ -3,6 +3,9 @@
 ob_start();
 $title_page = "Room Images Management";
 include('../db_Connect.php');
+
+
+
 ?>
 
 
@@ -14,13 +17,41 @@ include('../db_Connect.php');
 </div>
 
 <div class="card border-0 shadow mb-4" style="height: 450px; max-height: 450px;">
-    
+
     <!-- Scrollable Images Section (350px) -->
     <div class="card-body" style="height: 350px; overflow-y: auto;">
         <h5 class="mb-3">Current Room Images</h5>
 
         <div class="row g-3">
             <!-- Example Image Card 1 -->
+            <?php
+
+                if (isset($_GET['room_id'])) {
+                    $room_id = $_GET['room_id'];
+
+                    $q_getRoomImages = "SELECT * FROM `room_image` WHERE `room_id` = '$room_id'";
+                    $res_getRoomImages = mysqli_query($con, $q_getRoomImages);
+
+                    $images = "";
+                    while ($row = mysqli_fetch_assoc($res_getRoomImages))
+                    {
+                        $room_id = $row['room_id'];
+                        $thumb = $row['thumb'];
+                        
+                        $images .= "
+                        
+
+                        
+                        ";
+                    }
+                }
+                else {
+                    header('location: rooms.php');
+                }
+
+
+
+            ?>
             <div class="col-md-4">
                 <div class="border rounded p-2 text-center">
                     <img src="../Images/rooms/1.jpg" class="img-fluid rounded mb-2"
@@ -48,92 +79,17 @@ include('../db_Connect.php');
                 </div>
             </div>
 
-            <!-- Duplicate cards below as needed -->
-            <div class="col-md-4">
-                <div class="border rounded p-2 text-center">
-                    <img src="../Images/rooms/1.jpg" class="img-fluid rounded mb-2"
-                        style="height: 150px; width: 100%; object-fit: cover;" alt="Room Image 2">
 
-                    <form action="" method="post" class="mt-2">
-                        <input type="hidden" name="image_id" value="2">
-                        <div class="row g-0">
-                            <div class="col-6 border-end d-flex justify-content-center align-items-center">
-                                <button type="submit" name="set_thumb"
-                                    class="btn btn-sm btn-secondary shadow-none rounded-circle d-flex justify-content-center align-items-center"
-                                    style="width: 40px; height: 40px;">
-                                    <i class="bi bi-check-lg"></i>
-                                </button>
-                            </div>
-                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                <button type="submit" name="delete_image"
-                                    class="btn btn-sm btn-danger shadow-none rounded-circle d-flex justify-content-center align-items-center"
-                                    style="width: 40px; height: 40px;">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="border rounded p-2 text-center">
-                    <img src="../Images/rooms/1.jpg" class="img-fluid rounded mb-2"
-                        style="height: 150px; width: 100%; object-fit: cover;" alt="Room Image 2">
 
-                    <form action="" method="post" class="mt-2">
-                        <input type="hidden" name="image_id" value="2">
-                        <div class="row g-0">
-                            <div class="col-6 border-end d-flex justify-content-center align-items-center">
-                                <button type="submit" name="set_thumb"
-                                    class="btn btn-sm btn-secondary shadow-none rounded-circle d-flex justify-content-center align-items-center"
-                                    style="width: 40px; height: 40px;">
-                                    <i class="bi bi-check-lg"></i>
-                                </button>
-                            </div>
-                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                <button type="submit" name="delete_image"
-                                    class="btn btn-sm btn-danger shadow-none rounded-circle d-flex justify-content-center align-items-center"
-                                    style="width: 40px; height: 40px;">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="border rounded p-2 text-center">
-                    <img src="../Images/rooms/1.jpg" class="img-fluid rounded mb-2"
-                        style="height: 150px; width: 100%; object-fit: cover;" alt="Room Image 2">
-
-                    <form action="" method="post" class="mt-2">
-                        <input type="hidden" name="image_id" value="2">
-                        <div class="row g-0">
-                            <div class="col-6 border-end d-flex justify-content-center align-items-center">
-                                <button type="submit" name="set_thumb"
-                                    class="btn btn-sm btn-secondary shadow-none rounded-circle d-flex justify-content-center align-items-center"
-                                    style="width: 40px; height: 40px;">
-                                    <i class="bi bi-check-lg"></i>
-                                </button>
-                            </div>
-                            <div class="col-6 d-flex justify-content-center align-items-center">
-                                <button type="submit" name="delete_image"
-                                    class="btn btn-sm btn-danger shadow-none rounded-circle d-flex justify-content-center align-items-center"
-                                    style="width: 40px; height: 40px;">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Add more images as needed -->
         </div>
     </div>
 
+    <button type="submit" name="set_thumb"
+        class="btn btn-sm btn-secondary shadow-none rounded-circle d-flex justify-content-center align-items-center"
+        style="width: 40px; height: 40px;">
+        <i class="bi bi-check-lg"></i>
+    </button>
     <!-- Fixed Footer Section (100px) -->
     <div class="card-footer bg-white border-0" style="height: 100px;">
         <form action="" method="post" enctype="multipart/form-data"
@@ -152,9 +108,9 @@ include('../db_Connect.php');
 </div>
 
 
-        <?php
+<?php
 
-        $content = ob_get_clean();
-        require_once 'index.php';
+$content = ob_get_clean();
+require_once 'index.php';
 
-        ?>
+?>
