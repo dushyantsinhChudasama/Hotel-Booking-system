@@ -17,13 +17,39 @@ if(!(isset($_SESSION['login'])  && $_SESSION['login'] == true))
   $row = mysqli_query($con, $user_data);
   $user =  mysqli_fetch_assoc($row);
 
+//getting room details from the id
+$room_id;
+if(isset($_GET['room_id']))
+{
+    $room_id = $_GET['room_id'];
+}
+else
+{
+    header('Location: rooms.php');
+}
+
+$q_get_rooms = "SELECT * FROM `rooms` WHERE `id` = $room_id";
+$res_getRooms = mysqli_query($con, $q_get_rooms);
+if(mysqli_num_rows($res_getRooms) == 0)
+{
+    header('Location: rooms.php');
+}
+else
+{
+    $room_thumb_query = "SELECT * FROM `room_image` WHERE `room_id` = $room_id AND `thumb` = 1";
+    $res_room_thumb = mysqli_query($con, $room_thumb_query);
+    $room = mysqli_fetch_assoc($res_getRooms);
+    $roomThumb = mysqli_fetch_assoc($res_room_thumb);
+    $roomThumbImage = "Images/rooms/$roomThumb[image]";
+}
+
 ?>
 
     <div class="container">
         <div class="row">
 
             <!-- Showing room name -->
-            <div class="col-12 my-5 px-4">
+            <div class="col-12 mt-3 mb-2 px-4">
                 <h2 class="fw-bold">CONFIRM BOOKING</h2>
             </div>
 
@@ -33,9 +59,9 @@ if(!(isset($_SESSION['login'])  && $_SESSION['login'] == true))
 
 
                 <div class="card p-3 shadow-sm rounded">
-                    <img src="Images/rooms/IMG_11892.png" class="img-fluid rounded mb-3" />
-                    <h5>Simple Room</h5>
-                    <h6>₹2000 per night</h6>
+                    <img src="<?php echo $roomThumbImage?>" class="img-fluid rounded mb-3" />
+                    <h5><?php echo $room['name']?></h5>
+                    <h6><?php echo $room['price']?> per night</h6>
                 </div>
 
 
