@@ -107,6 +107,7 @@ else
                     <span class="visually-hidden">Loading...</span>
                   </div>
 
+                  <input type="hidden" name="room_id" value="<?php echo $room_id ?>">
                   <h6 class="mb-3 text-danger" id="pay_info"></h6>
                   <button name="pay_now" class="btn w-100 text-white custome-bg shadow-none mb-1">Pay
                     Now</button>
