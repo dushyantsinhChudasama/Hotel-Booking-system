@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const payInfo = document.getElementById("pay_info");
   const payButton = document.querySelector("button[name='pay_now']");
 
-  const perNightRate = 2000; // per night rate
+  const perNightRate = <?php echo $room['price']?>; // per night rate
 
   function calculateBookingDetails() {
     const checkinDate = new Date(checkinInput.value);
