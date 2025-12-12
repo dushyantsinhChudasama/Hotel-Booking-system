@@ -1,5 +1,7 @@
 <?php
 
+include('db_Connect.php');
+
   ob_start();
   $title_page = "DC Hotels - Bookings";
 
@@ -8,6 +10,13 @@
   {
     header('Location: login.php');
   }
+
+  $user_id = $_SESSION['uid'];
+
+  $get_bookings = "SELECT * FROM booking_order WHERE user_id='$user_id' ORDER BY check_in DESC";
+  $bookings = mysqli_query($con,$get_bookings);
+
+  $reciepts = "";
 ?>
 
 <div class="container">
@@ -17,111 +26,98 @@
             <h2 class="fw-bold">BOOKINGS</h2>
         </div>
 
-        <div class="col-md-4 px-4 mb-4">
-            <div class="bg-white shadow p-3 rounded">
-            
-            <h5>Simple Room</h5>
-            <p>₹2000 per night</p>
-            <p>
-                  <b>Check In : </b>08-09-2025 <br>
-                  <b>Check Out : </b>05-09-2025 <br>
-                </p>
+        <?php
+        
+        while($data = mysqli_fetch_assoc($bookings))
+        {
+          $badge = "";
+          $downloadButton = "";
 
-                <p>
-                <b>Amount : </b> ₹5499 <br>
-                <b>Order ID : </b> ORD_129877 <br>
-                <b>Date : </b> 08-09-2025 <br>
-              </p>
+          // BADGE
+          if ($data['status'] == 'cancelled') {
+            $badge = "<span class='badge bg-danger'>Cancelled</span>";
+          }
 
+          if ($data['refund'] == 1) {
+            $badge = "<span class='badge bg-primary text-white'>Refunded</span>";
+          }
+          elseif ($data['status'] == 'refund in progress') {
+            $badge = "<span class='badge bg-secondary'>Refund in Progress</span>";
+          }
+          elseif ($data['arrival'] == 1) {
+            $badge = "<span class='badge bg-primary'>Completed</span>";
+          }
+          elseif ($data['status'] == 'booked') {
+            $badge = "<span class='badge bg-success'>Booked</span>";
+          }
+
+
+          // BUTTONS
+          if ($data['arrival'] == 1) 
+          {
+            // completed -> invoice
+            $downloadButton = "<a href='generate_pdf.php?gen_pdf&id=$data[booking_id]' 
+                              class='btn btn-dark mt-2 shadow-none btn-sm'>
+                              Download Invoice</a>";
+          }
+          elseif ($data['refund'] == 1) 
+          {
+            // already refunded
+            $downloadButton = "<button class='btn btn-success mt-2 shadow-none btn-sm'>
+                                Amount Refunded</button>";
+          }
+          elseif ($data['status'] == 'refund in progress') 
+          {
+            // refund processing
+            $downloadButton = "<button class='btn btn-secondary mt-2 shadow-none btn-sm' disabled>
+                                Refund in Progress</button>";
+          }
+          elseif ($data['status'] == 'cancelled') 
+          {
+            // cancelled -> no button
+            $downloadButton = "<button class='btn btn-primary mt-2 shadow-none btn-sm'>
+                                Refund in Progress</button>";
+          }
+          else 
+          {
+            // active booking -> show cancel
+            $downloadButton = "<a href='cancel_booking.php?can_book&bid=$data[booking_id]'
+                                class='btn btn-danger mt-2 shadow-none btn-sm'
+                                onclick=\"return confirm('Are you sure you want to cancel this booking?');\">
+                                Cancel Booking</a>";
+          }
+
+
+          $reciepts .= "
+          <div class='col-md-4 px-4 mb-4'>
+              <div class='bg-white shadow p-3 rounded'>
+              
+              <h5>$data[room_name]</h5>
+              <p>₹$data[price] per night</p>
               <p>
-                <span class='badge bg-success'>Booked</span>
-              </p>
-
-                <a href='generate_pdf.php?gen_pdf&id=$data[booking_id]'class='btn btn-dark mt-2  shadow-none btn-sm'>
-                    Download Invoice
-                </a>
-            </div>
-            
-        </div>
-
-        <div class="col-md-4 px-4 mb-4">
-            <div class="bg-white shadow p-3 rounded">
-            
-            <h5>Simple Room</h5>
-            <p>₹2000 per night</p>
-            <p>
-                  <b>Check In : </b>08-09-2025 <br>
-                  <b>Check Out : </b>05-09-2025 <br>
+                    <b>Check In : </b>$data[check_in] <br>
+                    <b>Check Out : </b>$data[check_out] <br>
+                  </p>
+  
+                  <p>
+                  <b>Amount : </b> ₹$data[trans_amt] <br>
+                  <b>Order ID : </b> $data[order_id] <br>
+                  <b>Date : </b> $data[datentime] <br>
                 </p>
-
+  
                 <p>
-                <b>Amount : </b> ₹5499 <br>
-                <b>Order ID : </b> ORD_129877 <br>
-                <b>Date : </b> 08-09-2025 <br>
-              </p>
-
-              <p>
-                <span class='badge bg-success'>Booked</span>
-              </p>
-
-              <button type='button' onclick='' class='btn btn-danger mt-2  btn-sm'>
-                Cancel
-                </button>
-            </div>
-            
-        </div>
-
-        <div class="col-md-4 px-4 mb-4">
-            <div class="bg-white shadow p-3 rounded">
-            
-            <h5>Simple Room</h5>
-            <p>₹2000 per night</p>
-            <p>
-                  <b>Check In : </b>08-09-2025 <br>
-                  <b>Check Out : </b>05-09-2025 <br>
+                  $badge
                 </p>
+  
+                  $downloadButton
+              </div>
+              
+          </div>";
+        }
+        
+        echo $reciepts
+        ?>
 
-                <p>
-                <b>Amount : </b> ₹5499 <br>
-                <b>Order ID : </b> ORD_129877 <br>
-                <b>Date : </b> 08-09-2025 <br>
-              </p>
-
-              <p>
-                <span class='badge bg-danger'>Cancelled</span>
-              </p>
-
-              <span class='badge bg-primary'>Refund in process!</span>
-            </div>
-            
-        </div>
-
-        <div class="col-md-4 px-4 mb-4">
-            <div class="bg-white shadow p-3 rounded">
-            
-            <h5>Simple Room</h5>
-            <p>₹2000 per night</p>
-            <p>
-                  <b>Check In : </b>08-09-2025 <br>
-                  <b>Check Out : </b>05-09-2025 <br>
-                </p>
-
-                <p>
-                <b>Amount : </b> ₹5499 <br>
-                <b>Order ID : </b> ORD_129877 <br>
-                <b>Date : </b> 08-09-2025 <br>
-              </p>
-
-              <p>
-                <span class='badge bg-danger'>Cancelled</span>
-              </p>
-
-              <button type='button' onclick='' class='btn btn-dark mt-2  btn-sm'>
-                Download Invoice
-                </button>
-            </div>
-            
-        </div>
 
     </div>
 </div>
