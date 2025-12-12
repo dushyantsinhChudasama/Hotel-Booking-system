@@ -62,7 +62,26 @@ ob_start();
 $title_page = "Dc Hotels - Payment Status";
 ?>
 
-        <h3 class="mb-4">Booking Payment Status</h3>
+  <!-- Showing room name -->
+  <div class="container">
+        <div class="row">
+
+            <div class="col-12 my-5 px-4">
+                <h2 class="fw-bold">PAYMENT STATUS</h2>
+            </div>
+
+            <div class="col-12 px4-">
+                <p class="fw-bold alert alert-success">
+                    <i class="bi bi-check-circle-fill"></i> 
+                    Thank you! Booking Successful, with booking id is order_123456
+                    <br><br>
+                    <a href='bookings.php'>Go to Bookings</a> | 
+                    <a href='rooms.php'>Book another Room</a>
+                </p>
+            </div>
+        </div>
+    </div>
+        <!-- <h3 class="mb-4">Booking Payment Status</h3>
 
         <p><strong>Status:</strong> <?php echo $statusMessage; ?></p>
         <p><strong>Payment ID:</strong> <?php echo $paymentId ?? "Not Available"; ?></p>
@@ -87,9 +106,9 @@ $title_page = "Dc Hotels - Payment Status";
         if ($thumb) {
             echo "<img src='Images/rooms/".$thumb['image']."' width='300' class='mt-3 rounded shadow'>";
         }
-        ?>
+        ?> -->
 
-        <a href="rooms.php" class="btn btn-primary mt-4">Book Another Room</a>
+        <!-- <a href="rooms.php" class="btn btn-primary mt-4">Book Another Room</a> -->
 
 
         <?php
