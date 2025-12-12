@@ -201,7 +201,7 @@ include('db_Connect.php');
                                 </div>
                             </div>
                             <div class='col-md-2 text-center'>
-                                <h6 class='mb-3'>₹2999 per night</h6>
+                                <h6 class='mb-3'>₹{$room_data['price']} per night</h6>
                                 <a href='confirm_booking.php?room_id={$room_data['id']}'
                                     class='btn btn-sm text-white w-100 custome-bg shadow-none mb-2'>Book Now</a>
                                     <a href='room_details.php?room_id={$room_data['id']}'

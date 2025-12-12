@@ -73,7 +73,7 @@ $title_page = "Dc Hotels - Payment Status";
             <div class="col-12 px4-">
                 <p class="fw-bold alert alert-success">
                     <i class="bi bi-check-circle-fill"></i> 
-                    Thank you! Booking Successful, with booking id is order_123456
+                    Thank you! Booking Successful, with booking id <?php echo $orderId?>
                     <br><br>
                     <a href='bookings.php'>Go to Bookings</a> | 
                     <a href='rooms.php'>Book another Room</a>

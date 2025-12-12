@@ -78,6 +78,9 @@ while ($f = mysqli_fetch_assoc($res_facilities)) {
 
         <!-- Room Name -->
         <div class="col-12 my-5 px-4">
+            <a href="rooms.php" class="text-dark" style="font-size: 1.8rem;">
+                <i class="bi bi-arrow-left-circle"></i>
+            </a>
             <h2 class="fw-bold"><?php echo htmlspecialchars($room_details['name']); ?></h2>
         </div>
 
