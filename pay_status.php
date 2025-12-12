@@ -14,11 +14,21 @@ $room_id = $_SESSION['room_id'] ?? null;
 $checkin = $_SESSION['checkin'] ?? null;
 $checkout = $_SESSION['checkout'] ?? null;
 $user_id = $_SESSION['uid'] ?? null;
+$phonenum = $_SESSION['phonenum'] ?? null;
 
 // Fetch room details
 $roomQuery = "SELECT * FROM rooms WHERE id='$room_id'";
 $resRoom = mysqli_query($con,$roomQuery);
 $room = mysqli_fetch_assoc($resRoom);
+$room_name = $room['name'];
+$room_price = $room['price'];
+
+//fetch user details
+$userQuery = "SELECT * FROM user_details WHERE id='$user_id'";
+$resUser = mysqli_query($con,$userQuery);
+$user = mysqli_fetch_assoc($resUser);
+$user_name = $user['full_name'];
+$user_mobile = $user['mobile'];
 
 // Default payment message
 $statusMessage = "Payment failed or cancelled.";
@@ -36,11 +46,34 @@ if($paymentId)
             $statusMessage = "Payment Successful";
 
             // Insert booking record
-            $q="INSERT INTO bookings
-                (user_id,room_id,checkin,checkout,amount,payment_id,order_id,payment_status)
-                VALUES
-                ('$user_id','$room_id','$checkin','$checkout','$amount','$paymentId','$orderId','SUCCESS')";
-            mysqli_query($con,$q);
+            $q = "INSERT INTO booking_order
+    (user_id, room_id, check_in, check_out, order_id, trans_amt, trans_resp_msg, payment_id, room_name, price, total_pay, user_name, phonenum)
+    VALUES
+    (
+        '$user_id',
+        '$room_id',
+        '$checkin',
+        '$checkout',
+        '$orderId',
+        '$amount',
+        '$statusMessage',
+        '$paymentId',
+        '$room_name',
+        '$room_price',
+        '$amount',
+        '$user_name',
+        '$user_mobile'
+    )";
+
+            
+            if(mysqli_query($con,$q))
+            {
+                // Booking recorded successfully
+            }
+            else
+            {
+                $statusMessage = "Booking recording failed.";
+            }
         }
         else
         {
@@ -49,6 +82,11 @@ if($paymentId)
 
     } catch(Exception $e) {
         $statusMessage = "Something went wrong while verifying payment.";
+    }
+    finally{
+        echo "<script>
+                console.log('Payment Status: $statusMessage');
+              </script>";
     }
 }
 else{

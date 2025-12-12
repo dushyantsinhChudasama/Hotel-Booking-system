@@ -44,6 +44,7 @@ if(isset($_POST['pay_now']))
     $_SESSION['room_id']=$room_id;
     $_SESSION['checkin']=$checkin;
     $_SESSION['checkout']=$checkout;
+    $_SESSION['phnonenum']=$phone;
 }
 else
 {
