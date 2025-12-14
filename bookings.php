@@ -13,7 +13,7 @@ include('db_Connect.php');
 
   $user_id = $_SESSION['uid'];
 
-  $get_bookings = "SELECT * FROM booking_order WHERE user_id='$user_id' ORDER BY check_in DESC";
+  $get_bookings = "SELECT * FROM booking_order WHERE user_id='$user_id' ORDER BY datentime DESC";
   $bookings = mysqli_query($con,$get_bookings);
 
   $reciepts = "";
@@ -32,6 +32,11 @@ include('db_Connect.php');
         {
           $badge = "";
           $downloadButton = "";
+
+          //getting the dates
+          $chedkin = date('d-m-Y', strtotime($data['check_in']));
+          $chedkout = date('d-m-Y', strtotime($data['check_out']));
+          $date_time = date('d-m-Y', strtotime($data['datentime']));
 
           // BADGE
           if ($data['status'] == 'cancelled') {
@@ -95,14 +100,14 @@ include('db_Connect.php');
               <h5>$data[room_name]</h5>
               <p>₹$data[price] per night</p>
               <p>
-                    <b>Check In : </b>$data[check_in] <br>
-                    <b>Check Out : </b>$data[check_out] <br>
+                    <b>Check In : </b>$chedkin <br>
+                    <b>Check Out : </b>$chedkout <br>
                   </p>
   
                   <p>
                   <b>Amount : </b> ₹$data[trans_amt] <br>
                   <b>Order ID : </b> $data[order_id] <br>
-                  <b>Date : </b> $data[datentime] <br>
+                  <b>Date : </b> $date_time <br>
                 </p>
   
                 <p>
