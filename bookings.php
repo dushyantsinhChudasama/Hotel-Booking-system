@@ -28,6 +28,13 @@ include('db_Connect.php');
 
         <?php
         
+        // if(mysqli_fetch_assoc($bookings) == 0)
+        // {
+        //   echo "<div class='col-lg-12 text-center'>
+        //           <h3 class='fw-bold'>No Bookings Made Yet!</h3>
+        //         </div>";
+        //   exit();
+        // }
         while($data = mysqli_fetch_assoc($bookings))
         {
           $badge = "";
