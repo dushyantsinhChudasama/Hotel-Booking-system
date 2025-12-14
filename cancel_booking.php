@@ -7,7 +7,7 @@ if(isset($_GET['can_book']) && isset($_GET['bid']))
     $booking_id = $_GET['bid'];
 
     // Update the booking status to 'cancelled'
-    $cancel_booking_query = "UPDATE booking_order SET status='cancelled' WHERE booking_id='$booking_id'";
+    $cancel_booking_query = "UPDATE booking_order SET booking_status='cancelled' WHERE booking_id='$booking_id'";
     $result = mysqli_query($con, $cancel_booking_query);
 
     if($result)

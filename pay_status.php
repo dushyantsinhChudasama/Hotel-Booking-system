@@ -47,7 +47,7 @@ if($paymentId)
 
             // Insert booking record
             $q = "INSERT INTO booking_order
-    (user_id, room_id, check_in, check_out, order_id, trans_amt, trans_resp_msg, payment_id, room_name, price, total_pay, user_name, phonenum)
+    (user_id, room_id, check_in, check_out, order_id, trans_amt, trans_resp_msg, payment_id, room_name, price, total_pay, user_name, phonenum, booking_status)
     VALUES
     (
         '$user_id',
@@ -62,13 +62,15 @@ if($paymentId)
         '$room_price',
         '$amount',
         '$user_name',
-        '$user_mobile'
+        '$user_mobile',
+        'booked'
     )";
 
             
             if(mysqli_query($con,$q))
             {
-                // Booking recorded successfully
+                $q_update_status = "UPDATE booking_order SET booking_status='booked' WHERE order_id='$orderId'";
+                mysqli_query($con,$q_update_status);
             }
             else
             {

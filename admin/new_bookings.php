@@ -1,6 +1,12 @@
 <?php
+include('../db_Connect.php');
 ob_start();
 $title_page = "New Bookings";
+
+//getting room details
+
+$get_bookings = "SELECT * FROM `booking_order` WHERE `booking_status`='booked' ORDER BY `booking_id` DESC";
+$result_bookings = mysqli_query($con, $get_bookings);
 
 ?>
 
@@ -11,13 +17,12 @@ $title_page = "New Bookings";
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
 
-        <div class="text-end mb-4">
-            <!-- <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#add-room">
-                                <i class="bi bi-plus-square"></i>
-                                Add
-                            </button> -->
-        </div>
+    <div class="text-end mb-4">
+    <input type="text" 
+           id="searchBooking" 
+           class="form-control w-25 d-inline-block shadow-none border border-secondary"
+           placeholder="Search by OrderId">
+</div>
 
         <div class="table-responsive">
             <table class="table table-hover border">
@@ -31,7 +36,15 @@ $title_page = "New Bookings";
                     </tr>
                 </thead>
                 <tbody id="tabel-data">
-                <tr>
+                <?php
+
+                $newBookings = "";
+                
+                while($data = mysqli_fetch_assoc($result_bookings))
+                {
+                    $newBookings .= "
+                    
+                    <tr>
                 <td>1</td>
                 <td>
                     <span class='badge bg-primary'>
@@ -64,11 +77,19 @@ $title_page = "New Bookings";
                     <i class='bi bi-check2-square'></i> Assign Room
                     </button>
                     <br>
-                    <button type='button' onclick="cancel_booking()" class='btn btn-outline-danger mt-2 fw-bold  btn-sm'>
+                    <button type='button' onclick='cancel_booking()' class='btn btn-outline-danger mt-2 fw-bold  btn-sm'>
                     <i class='bi bi-trash'></i> Cancel Booking
                     </button>
                 </td>
             </tr>
+                    ";
+
+                }
+
+                echo $newBookings;
+                
+                ?>
+                
                 </tbody>
             </table>
         </div>
