@@ -241,15 +241,22 @@ if (session_status() == PHP_SESSION_NONE) {
 
             <div class="col-lg-4 p-4">
                 <h5 class="mb-3">Follow us</h5>
-                <a href="https://twitter.com" target="_blank"
-                    class="d-inline-block text-dark text-decoration-none mb-2"><i class="bi bi-twitter-x me-1"></i> X
-                </a><br>
-                <a href="https://facebook.com" target="_blank"
-                    class="d-inline-block text-dark text-decoration-none mb-2"><i class="bi bi-facebook me-1"></i>
-                    Facebook </a><br>
-                <a href="https://instagram.com" target="_blank"
-                    class="d-inline-block text-dark text-decoration-none mb-2"><i class="bi bi-instagram me-1"></i>
-                    Instagram
+                <a href="<?php echo $settings_data['tw']?>" target="_blank" class="d-inline-block mb-3">
+                    <span class="badge bg-light text-dark fs-6 p-2">
+                    <i class="bi bi-twitter-x me-1"></i> X
+                    </span>
+                </a>
+                <br>
+                <a href="<?php echo $settings_data['fb']?>" target="_blank" class="d-inline-block mb-3">
+                    <span class="badge bg-light text-dark fs-6 p-2">
+                    <i class="bi bi-facebook me-1"></i> Facebook
+                    </span>
+                </a>
+                <br>
+                <a href="<?php echo $settings_data['insta']?>" target="_blank" class="d-inline-block mb-3">
+                    <span class="badge bg-light text-dark fs-6 p-2">
+                    <i class="bi bi-instagram me-1"></i> Instagram
+                    </span>
                 </a><br>
             </div>
         </div>

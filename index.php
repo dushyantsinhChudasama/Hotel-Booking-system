@@ -1,7 +1,14 @@
 <?php
 
   ob_start();
-  $title_page = "DC Hotels - Home"
+  $title_page = "DC Hotels - Home";
+
+  include('db_Connect.php');
+
+  //getting data of general settings
+  $settings_q = "SELECT * FROM `contact_details`";
+  $settings_res = mysqli_query($con, $settings_q);
+  $settings_data = mysqli_fetch_assoc($settings_res);
 
 ?>
 
@@ -92,126 +99,110 @@
     <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR ROOMS</h2>
    
     <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 my-3">
+    <div class="row">
 
-                <div class="card border shadow" style="max-width: 350px; margin: auto;">
-                    <img src="Images/rooms/1.jpg" alt="" class="card-img-top">
+<?php
+$q_getRooms = "SELECT * FROM rooms WHERE status = '1' AND removed = '0'";
+$res_getRooms = mysqli_query($con, $q_getRooms);
 
-                    <div class="card-body">
-                    <h5>Room Name</h5>
-                    <h6>₹12345 per night</h6>
+while ($room_data = mysqli_fetch_assoc($res_getRooms)) {
 
-                    <div class="features mb-3">
-                        <h6 class="mb-1">Features</h6>
-                        <span class="badge bg-light text-dark text-wrap me-1 mb-1">F1</span>
-                        <span class="badge bg-light text-dark text-wrap me-1 mb-1">F2</span>
-                        <span class="badge bg-light text-dark text-wrap me-1 mb-1">F3</span>
-                    </div>
+    $room_id = $room_data['id'];
 
-                    <div class="facilities mb-3">
-                        <h6 class="mb-1">Facilities</h6>
-                        <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA1</span>
-                        <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA2</span>
-                        <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA3</span>
-                    </div>
+    // ROOM IMAGE
+    $room_img_qry = "SELECT image FROM room_image 
+                     WHERE room_id = '$room_id' AND thumb = '1'";
+    $res_room_img = mysqli_query($con, $room_img_qry);
+    $room_Image_res = mysqli_fetch_assoc($res_room_img);
 
-                    <div class="guests mb-3">
-                        <h6>Guests</h6>
-                        <span class="badge bg-light text-dark text-wrap">5</span>
-                        <span class="badge bg-light text-dark text-wrap">3</span>
-                    </div>
+    if (!empty($room_Image_res['image'])) {
+        $room_Image = "Images/rooms/" . $room_Image_res['image'];
+    } else {
+        $default_img_qry = "SELECT image FROM room_default_image LIMIT 1";
+        $res_default = mysqli_query($con, $default_img_qry);
+        $default_img = mysqli_fetch_assoc($res_default);
+        $room_Image = "Images/room_default_image/" . $default_img['image'];
+    }
 
-                    <div class="d-flex justify-content-evenly">
-                        <button onclick="checkLoginToBook(<?php echo $login; ?>, <?php echo $room_data['id']; ?>)" 
-                        class="btn btn-sm custome-bg shadow-none">Book Now</button>
-                        <a href="room_details.php?id=<?php echo $room_data['id']; ?>" 
-                        class="btn btn-sm btn-outline-dark shadow-none">More details</a>
-                    </div>
-                    </div>
-                </div>
+    // FEATURES
+    $features = "";
+    $q_getFeatures = "
+        SELECT f.name 
+        FROM room_features rf 
+        JOIN features f ON rf.features_id = f.id 
+        WHERE rf.room_id = '$room_id'
+    ";
+    $res_getFeatures = mysqli_query($con, $q_getFeatures);
+    while ($f = mysqli_fetch_assoc($res_getFeatures)) {
+        $features .= "<span class='badge bg-light text-dark me-1 mb-1'>{$f['name']}</span>";
+    }
 
-            </div>
+    // FACILITIES
+    $facility = "";
+    $q_getFacility = "
+        SELECT f.name 
+        FROM room_facilities rf 
+        JOIN facilities f ON rf.facilities_id = f.id 
+        WHERE rf.room_id = '$room_id'
+    ";
+    $res_getFacility = mysqli_query($con, $q_getFacility);
+    while ($fa = mysqli_fetch_assoc($res_getFacility)) {
+        $facility .= "<span class='badge bg-light text-dark me-1 mb-1'>{$fa['name']}</span>";
+    }
+?>
 
-            <div class="col-lg-4 col-md-6 my-3">
+    <div class="col-lg-4 col-md-6 my-3">
 
-                <div class="card border shadow" style="max-width: 350px; margin: auto;">
-                <img src="Images/rooms/IMG_88315.png" alt="" class="card-img-top">
+        <div class="card border shadow" style="max-width:350px; margin:auto;">
+            
+            <img src="<?= $room_Image ?>" class="card-img-top">
 
-                <div class="card-body">
-                <h5>Room Name</h5>
-                <h6>₹12345 per night</h6>
+            <div class="card-body">
+
+                <h5><?= $room_data['name'] ?></h5>
+                <h6>₹<?= $room_data['price'] ?> per night</h6>
 
                 <div class="features mb-3">
                     <h6 class="mb-1">Features</h6>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">F1</span>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">F2</span>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">F3</span>
+                    <?= $features ?: "<span class='text-muted'>No features</span>" ?>
                 </div>
 
                 <div class="facilities mb-3">
                     <h6 class="mb-1">Facilities</h6>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA1</span>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA2</span>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA3</span>
+                    <?= $facility ?: "<span class='text-muted'>No facilities</span>" ?>
                 </div>
 
                 <div class="guests mb-3">
                     <h6>Guests</h6>
-                    <span class="badge bg-light text-dark text-wrap">5</span>
-                    <span class="badge bg-light text-dark text-wrap">3</span>
+                    <span class="badge bg-light text-dark"><?= $room_data['adult'] ?> Adults</span>
+                    <span class="badge bg-light text-dark"><?= $room_data['children'] ?> Children</span>
                 </div>
 
                 <div class="d-flex justify-content-evenly">
-                    <button onclick="checkLoginToBook(<?php echo $login; ?>, <?php echo $room_data['id']; ?>)" 
-                    class="btn btn-sm custome-bg shadow-none">Book Now</button>
-                    <a href="room_details.php?id=<?php echo $room_data['id']; ?>" 
-                    class="btn btn-sm btn-outline-dark shadow-none">More details</a>
+                    <a href="confirm_booking.php?room_id=<?= $room_id ?>"
+                       class="btn btn-sm custome-bg shadow-none">
+                        Book Now
+                    </a>
+
+                    <a href="room_details.php?room_id=<?= $room_id ?>"
+                       class="btn btn-sm btn-outline-dark shadow-none">
+                        More details
+                    </a>
                 </div>
+
             </div>
         </div>
 
-            </div>
+    </div>
 
-            <div class="col-lg-4 col-md-6 my-3">
+<?php } ?>
 
-            <div class="card border shadow" style="max-width: 350px; margin: auto;">
-                <img src="Images/rooms/IMG_78809.png" alt="" class="card-img-top">
+</div>
 
-                <div class="card-body">
-                <h5>Room Name</h5>
-                <h6>₹12345 per night</h6>
-
-                <div class="features mb-3">
-                    <h6 class="mb-1">Features</h6>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">F1</span>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">F2</span>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">F3</span>
-                </div>
-
-                <div class="facilities mb-3">
-                    <h6 class="mb-1">Facilities</h6>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA1</span>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA2</span>
-                    <span class="badge bg-light text-dark text-wrap me-1 mb-1">FA3</span>
-                </div>
-
-                <div class="guests mb-3">
-                    <h6>Guests</h6>
-                    <span class="badge bg-light text-dark text-wrap">5</span>
-                    <span class="badge bg-light text-dark text-wrap">3</span>
-                </div>
-
-                <div class="d-flex justify-content-evenly">
-                    <button onclick="checkLoginToBook(<?php echo $login; ?>, <?php echo $room_data['id']; ?>)" 
-                    class="btn btn-sm custome-bg shadow-none">Book Now</button>
-                    <a href="room_details.php?id=<?php echo $room_data['id']; ?>" 
-                    class="btn btn-sm btn-outline-dark shadow-none">More details</a>
-                </div>
-                </div>
-            </div>
 
             </div>
+
+          
         </div>
     </div>
 
@@ -222,32 +213,31 @@
 
     <div class="container">
         <div class="row justify-content-evenly px-lg-0 px-md-0 px-5">
-
+<!-- 
             <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
               <img src="Images/facilities/IMG_1637.svg" width="80px">
               <h5 class="mt-3">Geyser</h5>
-            </div>
+            </div> -->
 
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-              <img src="Images/facilities/IMG_8589.svg" width="80px">
-              <h5 class="mt-3">Wifi</h5>
-            </div>
+            <?php
+            $getFacilities = "SELECT * FROM facilities LIMIT 5";
+            $facilities_res = mysqli_query($con, $getFacilities);
+            
+            if (!$facilities_res) {
+                die(mysqli_error($con));
+            }
+            
+            while($facility = mysqli_fetch_assoc($facilities_res))
+            {
+                echo '
+                <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
+                    <img src="Images/facilities/'.$facility['image'].'" width="80px">
+                    <h5 class="mt-3">'.$facility['name'].'</h5>
+                </div>';
+            }
+            
 
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-              <img src="Images/facilities/IMG_29571.svg" width="80px">
-              <h5 class="mt-3">Spa</h5>
-            </div>
-
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-              <img src="Images/facilities/IMG_49949.svg" width="80px">
-              <h5 class="mt-3">AC</h5>
-            </div>
-
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-              <img src="Images/facilities/IMG_64523.svg" width="80px">
-              <h5 class="mt-3">Heater</h5>
-            </div>
-
+            ?>
             
 
         </div>
@@ -272,29 +262,29 @@
                 <div class="bg-white p-4 rounded mb-4">
                 <h5>Call us</h5>
                 <a href="tel: +919712802041" class="d-inline-block mb-2 text-dark text-decoration-none">
-                    <i class="bi bi-telephone-fill"></i>+919712820410
+                    <i class="bi bi-telephone-fill"></i>+<?php echo $settings_data['pn1']?>
                 </a>
                 <br>
                 <a href="tel: +919712802041" class="d-inline-block mb-2 text-dark text-decoration-none">
-                    <i class="bi bi-telephone-fill"></i>+919712820410
+                    <i class="bi bi-telephone-fill"></i>+<?php echo $settings_data['pn1']?>
                 </a>
                 </div>
 
                 <div class="bg-white p-4 rounded mb-4">
                 <h5>Follow us</h5>
-                <a href="https://x.com" target="_blank" class="d-inline-block mb-3">
+                <a href="<?php echo $settings_data['tw']?>" target="_blank" class="d-inline-block mb-3">
                     <span class="badge bg-light text-dark fs-6 p-2">
                     <i class="bi bi-twitter-x me-1"></i> X
                     </span>
                 </a>
                 <br>
-                <a href="https://facebook.com" target="_blank" class="d-inline-block mb-3">
+                <a href="<?php echo $settings_data['fb']?>" target="_blank" class="d-inline-block mb-3">
                     <span class="badge bg-light text-dark fs-6 p-2">
                     <i class="bi bi-facebook me-1"></i> Facebook
                     </span>
                 </a>
                 <br>
-                <a href="https://instagram.com" target="_blank" class="d-inline-block mb-3">
+                <a href="<?php echo $settings_data['insta']?>" target="_blank" class="d-inline-block mb-3">
                     <span class="badge bg-light text-dark fs-6 p-2">
                     <i class="bi bi-instagram me-1"></i> Instagram
                     </span>

@@ -8,6 +8,44 @@ $title_page = "New Bookings";
 $get_bookings = "SELECT * FROM `booking_order` WHERE `booking_status`='booked' ORDER BY `booking_id` DESC";
 $result_bookings = mysqli_query($con, $get_bookings);
 
+
+//storing room number in database
+if(isset($_POST['assignRoom']))
+{
+    $room_no = $_POST['room_no'];
+    $booking_id = $_POST['booking_id'];
+
+    if(empty($room_no)){
+        echo "<script>
+            document.getElementById('room_noError').innerText = 'Room number is required';
+        </script>";
+    } else {
+
+        
+        $update_booking = "
+            UPDATE `booking_order`
+            SET `room_no`='$room_no', `booking_status`='complete'
+            WHERE `booking_id`='$booking_id'
+        ";
+
+        $result_update = mysqli_query($con, $update_booking);
+
+        if($result_update){
+            echo "<script>
+                alert('Room assigned successfully!');
+                window.location.href = 'new_bookings.php';
+            </script>";
+        } else {
+            echo "<script>
+                alert('Failed to assign room.');
+            </script>";
+        }
+    }
+
+    var_dump($_POST);
+
+}
+
 ?>
 
 <div class="d-flex align-items-center justify-content-between mb-4">
@@ -18,11 +56,11 @@ $result_bookings = mysqli_query($con, $get_bookings);
     <div class="card-body">
 
     <div class="text-end mb-4">
-    <input type="text" 
-           id="searchBooking" 
-           class="form-control w-25 d-inline-block shadow-none border border-secondary"
-           placeholder="Search by OrderId">
-</div>
+        <input type="text" 
+            id="searchBooking" 
+            class="form-control w-25 d-inline-block shadow-none border border-secondary"
+            placeholder="Search by OrderId">
+    </div>
 
         <div class="table-responsive">
             <table class="table table-hover border">
@@ -38,39 +76,43 @@ $result_bookings = mysqli_query($con, $get_bookings);
                 <tbody id="tabel-data">
                 <?php
 
+                $i = 1;
+
                 $newBookings = "";
                 
                 while($data = mysqli_fetch_assoc($result_bookings))
                 {
+                    $chekin = date('d-m-Y', strtotime($data['check_in']));
+                    $checkout = date('d-m-Y', strtotime($data['check_out']));
+                    $bookdate = date('d-m-Y', strtotime($data['datentime']));
                     $newBookings .= "
                     
                     <tr>
-                <td>1</td>
+                <td>$i</td>
                 <td>
                     <span class='badge bg-primary'>
-                        Order ID: ORD_12345
+                        Order ID: $data[order_id]
                     </span>
                     <br>
-                    <b>Name:</b> UserName
+                    <b>Name:</b> $data[user_name]
                     <br>
-                    <b>Phone:</b> 123456789
+                    <b>Phone:</b> $data[phonenum]
                 </td>
                 <td>
-                    <b>Room:</b> Simple room
+                    <b>Room:</b> $data[room_name]
                     <br>
-                    <b>Price:</b> ₹2000
+                    <b>Price:</b> ₹$data[price]
 
                 </td>
 
                 <td>
-                    <b>Check-in:</b> 01-09-2025
+                    <b>Check-in:</b> $chekin
                     <br>
-                    <b>Check-out:</b> 01-09-2025
+                    <b>Check-out:</b> $checkout
                     <br>
-                    <b>Paid:</b> ₹2000
+                    <b>Paid:</b> ₹$data[total_pay]
                     <br>
-                    <b>Date:</b> 01-09-2025
-                </td>
+                    <b>Date:</b> $bookdate
 
                 <td>
                     <button type='button' class='btn text-white fw-bold custome-bg btn-sm' data-bs-toggle='modal' data-bs-target='#assign-room'>
@@ -83,6 +125,7 @@ $result_bookings = mysqli_query($con, $get_bookings);
                 </td>
             </tr>
                     ";
+                    $i++;
 
                 }
 
@@ -97,7 +140,7 @@ $result_bookings = mysqli_query($con, $get_bookings);
 </div>
 
     <!-- Modal for Assigninig room -->
-    <div class="modal fade" id="assign-room" tabindex="-1" aria-labelledby="exampleModalLabel">
+    <!-- <div class="modal fade" data-bs-keyboard="false" id="assign-room" tabindex="-1" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog">
 
             <form id="assign_room_form">
@@ -118,19 +161,71 @@ $result_bookings = mysqli_query($con, $get_bookings);
                     <div class="modal-footer">
                         <button type="reset" class="btn text-secondary shadow-none"
                             data-bs-dismiss="modal">CANCEL</button>
-                        <button type="submit" class="btn custome-bg text-white shadow-none"
-                            data-bs-dismiss="modal">ASSIGN</button>
+                        <button type="submit" class="btn custome-bg text-white shadow-none">ASSIGN</button>
                     </div>
                 </div>
             </form>
 
         </div>
-    </div>
+    </div> -->
+
+    <div class="modal fade" id="assign-room" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <form method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Assign Room</h5>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="container-fluid">
+                                <div class="row">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">Room no:</label>
+                                            <input type="text" name="room_no" id="room_inp"
+                                                class="form-control shadow-none" data-validation="required">
+                                                <span id="room_noError" class="text-danger small"></span>
+
+                                                <!-- Hidden form feild for booking id -->
+                                                <input type="hidden" name="booking_id" id="booking_id">
+                                        </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button"
+                                class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
+                                <!-- <button 
+                                    type="button"
+                                    class="btn text-white fw-bold custome-bg btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#assign-room"
+                                    onclick="setBookingId('<?php echo $data['booking_id']; ?>')">
+                                    <i class="bi bi-check2-square"></i> Assign Room
+                                </button> -->
+                                <button type="submit" name="assignRoom" class="btn custome-bg text-white shadow-none">
+    SAVE
+</button>
+
+
+                    </div>
+
+
+                </form>
+
+        </div>
+        </div>
 
 
     <script>
         function cancel_booking(){
             confirm("Are you sure you wnat to cancel booking?");
+        }
+
+        function setBookingId(id){
+            document.getElementById('booking_id').value = id;
         }
     </script>
 <?php

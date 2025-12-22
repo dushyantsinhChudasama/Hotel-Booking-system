@@ -2,8 +2,16 @@
 ob_start();
 $title_page = "Refund Bookings";
 
-?>
+include('../db_Connect.php');
 
+// fetch refundable bookings
+$q = "SELECT * FROM booking_order 
+      WHERE refund = 0 
+      AND booking_status = 'cancelled'
+      ORDER BY booking_id DESC";
+
+$res = mysqli_query($con, $q);
+?>
 
 <div class="d-flex align-items-center justify-content-between mb-4">
     <h3>Refund Bookings</h3>
@@ -12,62 +20,60 @@ $title_page = "Refund Bookings";
 <div class="card border-0 shadow mb-4">
     <div class="card-body">
 
-        <div class="text-end mb-4">
-            <!-- <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#add-room">
-                                <i class="bi bi-plus-square"></i>
-                                Add
-                            </button> -->
-        </div>
-
         <div class="table-responsive">
             <table class="table table-hover border">
                 <thead>
                     <tr class="bg-dark text-light">
-                        <th scope="col">#</th>
-                        <th scope="col">User Details</th>
-                        <th scope="col">Room Details</th>
-                        <th scope="col">Refund Amount</th>
-                        <th scope="col">Action</th>
+                        <th>#</th>
+                        <th>User Details</th>
+                        <th>Room Details</th>
+                        <th>Refund Amount</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="tabel-data">
-                <tr>
-                <td>1</td>
-                <td>
-                    <span class='badge bg-primary'>
-                        Order ID: ORD_12345
-                    </span>
-                    <br>
-                    <b>Name:</b> UserName
-                    <br>
-                    <b>Phone:</b> 123456789
-                </td>
-                <td>
-                    <b>Room:</b> Simple room
-                    <br>
-                    <b>Check-in:</b> 01-09-2025
-                    <br>
-                    <b>Check-out:</b> 01-09-2025
-                    <br>
-                    <b>Date:</b> 01-09-2025
-                    
 
-                </td>
+                <tbody>
+                <?php
+                if(mysqli_num_rows($res) == 0){
+                    echo "<tr><td colspan='5' class='text-center fw-bold'>No Refund Requests</td></tr>";
+                } else {
+                    $i = 1;
+                    while($row = mysqli_fetch_assoc($res)){
+                ?>
+                    <tr>
+                        <td><?= $i++ ?></td>
 
-                <td>
-                   
-                   
-                <b> ₹2000</b>
-                  
-                </td>
+                        <td>
+                            <span class="badge bg-primary">
+                                Order ID: <?= $row['order_id'] ?>
+                            </span><br>
+                            <b>Name:</b> <?= $row['user_name'] ?><br>
+                            <b>Phone:</b> <?= $row['phonenum'] ?>
+                        </td>
 
-                <td>
-                    <button type='button' onclick='refund_booking()' class='btn btn-success fw-bold  btn-sm'>
-                    <i class='bi bi-cash-stack'></i> Refund
-                    </button>
-                </td>
-            </tr>
+                        <td>
+                            <b>Room:</b> <?= $row['room_name'] ?><br>
+                            <b>Check-in:</b> <?= date('d-m-Y', strtotime($row['check_in'])) ?><br>
+                            <b>Check-out:</b> <?= date('d-m-Y', strtotime($row['check_out'])) ?><br>
+                            <b>Date:</b> <?= date('d-m-Y', strtotime($row['datentime'])) ?>
+                        </td>
+
+                        <td>
+                            <b>₹ <?= $row['total_pay'] ?></b>
+                        </td>
+
+                        <td>
+                            <button 
+                                onclick="refund_booking(<?= $row['booking_id'] ?>)" 
+                                class="btn btn-success btn-sm fw-bold">
+                                <i class="bi bi-cash-stack"></i> Refund
+                            </button>
+                        </td>
+                    </tr>
+                <?php
+                    }
+                }
+                ?>
                 </tbody>
             </table>
         </div>
@@ -75,10 +81,13 @@ $title_page = "Refund Bookings";
 </div>
 
 <script>
-        function refund_booking(){
-            confirm("Are you sure you wnat to Refund this booking?");
-        }
-    </script>
+function refund_booking(id){
+    if(confirm("Are you sure you want to refund this booking?")){
+        window.location.href = "refund_action.php?booking_id=" + id;
+    }
+}
+</script>
+
 <?php
 $content = ob_get_clean();
 include_once("index.php");
