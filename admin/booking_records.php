@@ -79,8 +79,8 @@ $res = mysqli_query($con, $q);
 
                         <td>
                             <?php if(!empty($row['payment_id'])){ ?>
-                                <a href="download_invoice.php?booking_id=<?= $row['booking_id'] ?>"
-                                   class="btn btn-outline-success btn-sm fw-bold mt-2">
+                                <a href="../generate_pdf.php?gen_pdf&id=<?= $row['booking_id'] ?>"
+   class="btn btn-outline-success btn-sm fw-bold mt-2">
                                     <i class="bi bi-file-earmark-arrow-down-fill"></i>
                                 </a>
                             <?php } else { ?>

@@ -1,15 +1,38 @@
 <?php
 ob_start();
 $title_page = "Refund Bookings";
-
 include('../db_Connect.php');
 
-// fetch refundable bookings
-$q = "SELECT * FROM booking_order 
-      WHERE refund = 0 
-      AND booking_status = 'cancelled'
-      ORDER BY booking_id DESC";
+/* HANDLE REFUND ACTION (SAME PAGE) */
+if (isset($_GET['refund_booking'])) {
 
+    $booking_id = (int)$_GET['refund_booking'];
+
+    $refund_q = "
+        UPDATE booking_order
+        SET refund = 1, booking_status = 'refunded'
+        WHERE booking_id = $booking_id
+    ";
+
+    if (mysqli_query($con, $refund_q)) {
+        echo "<script>
+            alert('Amount refunded successfully');
+            window.location.href='refund_bookings.php';
+        </script>";
+        exit;
+    } else {
+        echo "<script>alert('Refund failed');</script>";
+    }
+}
+
+/* FETCH REFUNDABLE BOOKINGS */
+$q = "
+    SELECT * 
+    FROM booking_order 
+    WHERE refund = 0 
+    AND booking_status = 'cancelled'
+    ORDER BY booking_id DESC
+";
 $res = mysqli_query($con, $q);
 ?>
 
@@ -34,11 +57,15 @@ $res = mysqli_query($con, $q);
 
                 <tbody>
                 <?php
-                if(mysqli_num_rows($res) == 0){
-                    echo "<tr><td colspan='5' class='text-center fw-bold'>No Refund Requests</td></tr>";
+                if (mysqli_num_rows($res) == 0) {
+                    echo "<tr>
+                            <td colspan='5' class='text-center fw-bold'>
+                                No Refund Requests
+                            </td>
+                          </tr>";
                 } else {
                     $i = 1;
-                    while($row = mysqli_fetch_assoc($res)){
+                    while ($row = mysqli_fetch_assoc($res)) {
                 ?>
                     <tr>
                         <td><?= $i++ ?></td>
@@ -63,11 +90,11 @@ $res = mysqli_query($con, $q);
                         </td>
 
                         <td>
-                            <button 
-                                onclick="refund_booking(<?= $row['booking_id'] ?>)" 
-                                class="btn btn-success btn-sm fw-bold">
-                                <i class="bi bi-cash-stack"></i> Refund
-                            </button>
+                            <a href="refund_bookings.php?refund_booking=<?= $row['booking_id'] ?>"
+                               class="btn btn-success btn-sm fw-bold"
+                               onclick="return confirm('Are you sure you want to refund this booking?');">
+                               <i class="bi bi-cash-stack"></i> Refund
+                            </a>
                         </td>
                     </tr>
                 <?php
@@ -79,14 +106,6 @@ $res = mysqli_query($con, $q);
         </div>
     </div>
 </div>
-
-<script>
-function refund_booking(id){
-    if(confirm("Are you sure you want to refund this booking?")){
-        window.location.href = "refund_action.php?booking_id=" + id;
-    }
-}
-</script>
 
 <?php
 $content = ob_get_clean();
